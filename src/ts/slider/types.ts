@@ -4,7 +4,17 @@ interface IState {
   isShowValue: boolean,
 }
 
-interface IModel {
+interface IEvents {
+  [eventName: string]: Function[],
+}
+
+interface IEventEmitter {
+  events: IEvents,
+  on(eventName: string, callback: Function): void,
+  emit(eventName: string, arg: any): void,
+}
+
+interface IModel{
   state: IState,
   step: number,
   toggleOrientation(): void,
