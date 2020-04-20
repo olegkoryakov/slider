@@ -7,7 +7,7 @@ function getModifier(element: JQuery): string | undefined {
 }
 
 function getSliderHTML() {
-  return $(`<div class="slider slider--horizontal">
+  return $(`<div class="slider">
               <div class="slider__values">
                 <input type="text" class="slider__input-value slider__input-value--from">
                 <input type="text" class="slider__input-value slider__input-value--to">
@@ -23,9 +23,5 @@ function getSliderHTML() {
               </div>
             </div>`);
 }
-
-// function isValidInputValue(value: string | number) {
-//   return value !== undefined || value !== '';
-// }
 
 export { getModifier, getSliderHTML };
