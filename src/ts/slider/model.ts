@@ -6,13 +6,47 @@ export default class Model implements IModel {
       isShowValue,
     };
     this.step = 1;
+    this.setValues({ from: 1, to: 100 });
   }
 
   state: IState;
 
   step: number;
 
+  values!: TValues;
+
+  rangeValues!: IRangeValues;
+
+  setValues(values: TValues) {
+    this.values = values;
+    if (values instanceof Array) {
+      this.rangeValues = {
+        min: 0,
+        max: values.length - 1,
+      };
+    } else {
+      this.rangeValues = {
+        min: values.from,
+        max: values.to,
+      };
+    }
+  }
+
+  getValues(): TValues {
+    return this.values;
+  }
+
+  getRangeValues(): IRangeValues {
+    return this.rangeValues;
+  }
+
+  getState(): IState {
+    return this.state;
+  }
+
   setStep(step: number): void {
+    const maxStep = this.rangeValues.max - this.rangeValues.min;
+    if (step > maxStep) return;
     this.step = step;
   }
 
