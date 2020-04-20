@@ -1,4 +1,11 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: 'Comic Neue', cursive;
 }
+
+.hide {
+  visibility: hidden;
+}
+
+@import './modules/slider.scss';
