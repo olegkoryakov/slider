@@ -25,9 +25,16 @@ export default class Model implements IModel {
         max: values.length - 1,
       };
     } else {
+      let min = values.from;
+      let max = values.to;
+      if (min > max) {
+        const temp = min;
+        min = max;
+        max = temp;
+      }
       this.rangeValues = {
-        min: values.from,
-        max: values.to,
+        min,
+        max,
       };
     }
   }

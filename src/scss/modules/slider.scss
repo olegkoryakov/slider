@@ -15,8 +15,9 @@
 
 .slider__input-value {
   box-sizing: border-box;
-  width: 100px;
-  padding: 0;
+  max-width: 100px;
+  padding: 5px;
+  font-size: 20px;
   border: 2px solid darkslateblue;
   border-radius: 4px;
   outline: none;
@@ -36,6 +37,7 @@
 }
 
 .slider__thumb {
+  user-select: none;
   position: absolute;
   z-index: 1;
   cursor: pointer;
@@ -55,6 +57,7 @@
 }
 
 .slider__value {
+  user-select: text;
   position: absolute;
   box-sizing: border-box;
 
@@ -77,7 +80,7 @@
 
 .slider {
   &--horizontal {
-    padding-top: 30px;
+    padding-top: 37px;
     flex-direction: row;
     .slider__line {
       margin-top: 40px;

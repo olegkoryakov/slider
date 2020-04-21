@@ -1,15 +1,19 @@
 import EventEmitter from './eventemitter';
-import { getSliderHTML } from './helpers';
+import { getSliderHTML, getConfigPanelHTML } from './helpers';
 
 
 export default class View extends EventEmitter implements IView {
   slider: JQuery;
 
+  configPanel: JQuery;
+
   constructor() {
     super();
     this.slider = getSliderHTML();
+    this.configPanel = getConfigPanelHTML();
     this.addDragNDropHandlers();
     this.addInputsChangeHandlers();
+    this.addConfigPanelHandlers();
   }
 
   setSliderInitialState(state: IState) {
@@ -35,6 +39,25 @@ export default class View extends EventEmitter implements IView {
 
   toggleOrientation() {
     this.slider.toggleClass('slider--horizontal slider--vertical');
+    const thumbs = Array.from(this.slider.find('.slider__thumb'));
+    const sliderLine = this.slider.find('.slider__range-line');
+    const options = this.getSliderOptions();
+    const currentPosition = options.position;
+    const oldPosition = currentPosition === 'left' ? 'top' : 'left';
+
+    thumbs.forEach((thumb) => {
+      const thumbCoord = $(thumb).css(oldPosition);
+      $(thumb).css({
+        [currentPosition]: thumbCoord,
+        [oldPosition]: 0,
+      });
+    });
+
+    const sliderLineCoord = sliderLine.css(oldPosition);
+    sliderLine.css({
+      [currentPosition]: sliderLineCoord,
+      [oldPosition]: '50%',
+    });
   }
 
   toggleRange() {
@@ -47,7 +70,7 @@ export default class View extends EventEmitter implements IView {
   }
 
   toggleShowValue() {
-    const values = this.slider.find('.slider__values');
+    const values = this.slider.find('.slider__value');
     values.toggleClass('hide');
   }
 
@@ -127,6 +150,33 @@ export default class View extends EventEmitter implements IView {
     thumb.find('.slider__value').text(value);
   }
 
+  addConfigPanelHandlers() {
+    const that = this;
+    const buttons = that.configPanel.find('.config-panel__button');
+    const inputs = that.configPanel.find('.config-panel__input');
+    console.log(inputs);
+
+    function onButtonClick(clickE: JQuery.ClickEvent) {
+      const button = $(clickE.target);
+      if (button.hasClass('config-panel__button--toggle-orientation')) that.emit('toggle-orientation', null);
+      else if (button.hasClass('config-panel__button--toggle-range')) that.emit('toggle-range', null);
+      else if (button.hasClass('config-panel__button--toggle-show-value')) that.emit('toggle-show-value', null);
+    }
+
+    function onInputChange(changeE: JQuery.ChangeEvent) {
+      const input = $(changeE.target);
+      const inputValue = input.val();
+
+      if (inputValue === undefined) return;
+
+      if (input.hasClass('config-panel__input--values')) that.emit('set-values', inputValue);
+      else if (input.hasClass('config-panel__input--step') && !(inputValue instanceof Array)) that.emit('set-step', inputValue);
+    }
+
+    inputs.change(onInputChange.bind(that));
+    buttons.click(onButtonClick.bind(that));
+  }
+
   addInputsChangeHandlers() {
     const inputs = this.slider.find('.slider__input-value');
     const that = this;
@@ -155,8 +205,7 @@ export default class View extends EventEmitter implements IView {
       }
     }
 
-    const bindedOnInputChange = onInputChange.bind(that);
-    inputs.change(bindedOnInputChange);
+    inputs.change(onInputChange.bind(that));
   }
 
   addDragNDropHandlers() {
