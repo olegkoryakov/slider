@@ -45,4 +45,15 @@ describe('Model', () => {
   test('getStep should return step', () => {
     expect(model.getStep()).toEqual(model.step);
   });
+
+  test('setValues should set values range and values', () => {
+    model.setValues({ from: 10, to: 5 });
+    expect(model.getValues()).toEqual({ from: 5, to: 10 });
+    expect(model.getRangeValues()).toEqual({ min: 5, max: 10 });
+
+    const valuesArray = ['1', '2', '2'];
+    model.setValues(valuesArray);
+    expect(model.getValues()).toEqual(valuesArray);
+    expect(model.getRangeValues()).toEqual({ min: 0, max: valuesArray.length - 1 });
+  });
 });
