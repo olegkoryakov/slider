@@ -18,20 +18,27 @@ export default class Model implements IModel {
   rangeValues!: IRangeValues;
 
   setValues(values: TValues) {
-    this.values = values;
     if (values instanceof Array) {
       this.rangeValues = {
         min: 0,
         max: values.length - 1,
       };
+      this.values = values;
     } else {
       let min = values.from;
       let max = values.to;
+
       if (min > max) {
         const temp = min;
         min = max;
         max = temp;
       }
+
+      this.values = {
+        from: min,
+        to: max,
+      };
+
       this.rangeValues = {
         min,
         max,
@@ -52,8 +59,6 @@ export default class Model implements IModel {
   }
 
   setStep(step: number): void {
-    const maxStep = this.rangeValues.max - this.rangeValues.min;
-    if (step > maxStep) return;
     this.step = step;
   }
 

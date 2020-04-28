@@ -1,7 +1,6 @@
 import EventEmitter from './eventemitter';
 import { getSliderHTML, getConfigPanelHTML } from './helpers';
 
-
 export default class View extends EventEmitter implements IView {
   slider: JQuery;
 
@@ -154,7 +153,6 @@ export default class View extends EventEmitter implements IView {
     const that = this;
     const buttons = that.configPanel.find('.config-panel__button');
     const inputs = that.configPanel.find('.config-panel__input');
-    console.log(inputs);
 
     function onButtonClick(clickE: JQuery.ClickEvent) {
       const button = $(clickE.target);

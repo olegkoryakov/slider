@@ -7,5 +7,4 @@ const view = new View();
 const parentElement = $('body');
 
 const presenter = new Presenter(model, view);
-parentElement.append(view.configPanel);
 presenter.renderSlider(parentElement);

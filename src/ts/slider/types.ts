@@ -49,6 +49,7 @@ interface ISliderOptions {
 
 interface IView extends IEventEmitter {
   slider: JQuery,
+  configPanel: JQuery,
   setSliderInitialState(state: IState): void,
   toggleOrientation(): void,
   toggleRange(): void,

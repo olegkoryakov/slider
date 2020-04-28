@@ -20,6 +20,7 @@ export default class Presenter {
   renderSlider(parentElement: JQuery) {
     const state = this.model.getState();
     parentElement.append(this.view.slider);
+    parentElement.append(this.view.configPanel);
     this.view.setSliderInitialState(state);
   }
 
@@ -39,24 +40,23 @@ export default class Presenter {
   }
 
   setValues(inputValue: string | string[]) {
-    if (inputValue instanceof Array) {
-      this.model.setValues(inputValue);
-    } else {
-      const regExp = new RegExp(',?\\s');
-      const valuesArray = inputValue.trim().split(regExp);
-      if (valuesArray.length === 2) {
-        const from = parseInt(valuesArray[0], 10);
-        const to = parseInt(valuesArray[1], 10);
-        if (!Number.isNaN(from) && !Number.isNaN(to)) {
-          this.model.setValues({ from, to });
-        }
-      } else if (valuesArray.length > 2) {
-        this.model.setValues(valuesArray);
-      } else if (valuesArray.length === 1) {
-        const value = parseInt(valuesArray[0], 10);
-        if (!Number.isNaN(value)) this.model.setValues({ from: 0, to: value });
+    const regExp = new RegExp(',?\\s');
+    let valuesArray = inputValue;
+    if (typeof valuesArray === 'string') valuesArray = valuesArray.trim().split(regExp);
+    if (valuesArray.length === 2) {
+      const from = parseInt(valuesArray[0], 10);
+      const to = parseInt(valuesArray[1], 10);
+      if (!Number.isNaN(from) && !Number.isNaN(to)) {
+        this.model.setValues({ from, to });
       }
+    } else if (valuesArray.length > 2) {
+      this.model.setValues(valuesArray);
+    } else if (valuesArray.length === 1) {
+      const value = parseInt(valuesArray[0], 10);
+      if (!Number.isNaN(value)) this.model.setValues({ from: 0, to: value });
     }
+    const state = this.model.getState();
+    this.view.setSliderInitialState(state);
   }
 
   setStep(inputValue: string | number) {
