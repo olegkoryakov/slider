@@ -97,7 +97,8 @@ interface ISliderView extends IEventEmitter{
   _thumbTo: IThumbView,
   _rangeLine: IRangeLineView,
   _slider: JQuery,
-  _setInitialState(state: IState, node: JQuery): void,
+  _node: JQuery,
+  render(state: IState): void,
   _onSliderLineClick(clickE: JQuery.ClickEvent): void,
   setOrientation(orientation: IState['orientation']): void,
   getThumbByModifier(modifier: TModifier): IThumbView;
@@ -150,4 +151,20 @@ interface IConfigPanelView extends IEventEmitter {
   _configPanel: JQuery,
   _callbackPrefix: string,
   addConfigPanelHandlers(emitCallback: Function): void,
+}
+
+interface IPresenter extends IEventEmitter {
+  _sliderView: ISliderView,
+  _configPanel: IConfigPanelView,
+  _model: IModel,
+  _converter: IConverter,
+  renderApp(): void,
+  _renderRange(rangeInstances: IRangeInstances): void,
+  _changeOrientation(): void,
+  _changeShowValues(): void,
+  _changeRangeState(): void,
+  _changeValues(values: string[]): void,
+  _changeStep(inputValue: string): void,
+  _changeValue(thumbView: IThumbView): void,
+  _changeInputValue(valueInputView: IValueInputView): void,
 }
