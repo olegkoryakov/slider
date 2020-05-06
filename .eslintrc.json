@@ -21,6 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-underscore-dangle": ["error", { "allowAfterThis": true }], 
         "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
         "linebreak-style": ["error", "windows"],
         "import/extensions": [
@@ -29,7 +30,8 @@
             {
               "ts": "never"
              }
-          ]
+          ],
+        "class-methods-use-this": ["error", { "exceptMethods": ["coordInValue", "valueInCoord", "calcValueWithStep"] }]
     },
     "settings": {
         "import/resolver": {
