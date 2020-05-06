@@ -31,7 +31,6 @@
   width: 20px;
   height: 20px;
   display: flex;
-
   border: 2px solid darkmagenta;
   border-radius: 4px;
 }
@@ -51,6 +50,7 @@
 
 .slider__range-line {
   position: relative;
+  z-index: -1;
   width: 3px;
   height: 3px;
   border: 2px solid darkseagreen;
