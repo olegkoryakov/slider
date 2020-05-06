@@ -4,8 +4,9 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import ValueInputView from './ValueInputView';
 
 export default class SliderView extends EventEmitter implements ISliderView {
-  constructor(state: IState, node: JQuery) {
+  constructor(node: JQuery) {
     super();
+    this._node = node;
     this._slider = $('<div class="slider"><div class="slider__values"></div><div class="slider__line"></div></div>');
     this._sliderLine = this._slider.find('.slider__line');
     this._rangeLine = new RangeLineView(this._sliderLine);
@@ -13,8 +14,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     this._thumbTo = new ThumbView('to', this._sliderLine);
     this._inputValueFrom = new ValueInputView('from', this._slider.find('.slider__values'));
     this._inputValueTo = new ValueInputView('to', this._slider.find('.slider__values'));
-    this._setInitialState(state, node);
   }
+
+  _node: JQuery;
 
   _inputValueFrom: IValueInputView;
 
@@ -30,12 +32,13 @@ export default class SliderView extends EventEmitter implements ISliderView {
 
   _sliderLine: JQuery;
 
-  _setInitialState(state: IState, node: JQuery) {
-    this._slider.appendTo(node);
+  render(state: IState) {
+    this._slider.appendTo(this._node);
     this._sliderLine.click(this._onSliderLineClick.bind(this));
     this.setOrientation(state.orientation);
     this.setRange(state.isRange);
     this.setShowValue(state.isShowValue);
+    this.addWindowHandler();
 
     const thumbsArray = [this._thumbFrom, this._thumbTo];
     const inputsArray = [this._inputValueFrom, this._inputValueTo];
@@ -63,10 +66,27 @@ export default class SliderView extends EventEmitter implements ISliderView {
     });
   }
 
+  addWindowHandler() {
+    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const that = this;
+    function onWindowResize() {
+      const { position } = that.getOptions();
+      const width = that.getWidth();
+      const thumbsPositions = thumbsArray.map((thumb) => thumb.getCoord(position));
+      thumbsPositions.forEach((thumbPosition, index) => {
+        if (thumbPosition > width) {
+          thumbsArray[index].setPosition(position, width);
+        }
+      });
+      that.calcValues();
+    }
+
+    $(window).resize(onWindowResize.bind(this));
+  }
+
   _onSliderLineClick(clickE: JQuery.ClickEvent) {
     if (clickE.target !== this._sliderLine[0]) return;
     const width = this.getWidth();
-    const thumbsArray = [this._thumbTo, this._thumbFrom];
     const { position } = this.getOptions();
     const offsetName = position === 'left' ? 'offsetX' : 'offsetY';
     let offset = clickE[offsetName];
@@ -74,13 +94,19 @@ export default class SliderView extends EventEmitter implements ISliderView {
     if (offset > width) offset = width;
     else if (offset < 0) offset = 0;
 
-    const thumbsCoords = thumbsArray
-      .map((thumb) => thumb.getCoord(position));
-    const distances = thumbsCoords.map((coord) => Math.abs(offset - coord));
-    const closestThumb = thumbsArray[
-      distances.findIndex((distance) => distance === Math.min(...distances))
-    ];
+    let closestThumb = this._thumbFrom;
+    if (this.isRange()) {
+      const thumbsArray = [this._thumbTo, this._thumbFrom];
+      const thumbsCoords = thumbsArray
+        .map((thumb) => thumb.getCoord(position));
+      const distances = thumbsCoords.map((coord) => Math.abs(offset - coord));
+      closestThumb = thumbsArray[
+        distances.findIndex((distance) => distance === Math.min(...distances))
+      ];
+    }
+
     closestThumb.setPosition(position, offset);
+
     this.emit('change-value', closestThumb);
   }
 
@@ -105,6 +131,14 @@ export default class SliderView extends EventEmitter implements ISliderView {
     this._slider.attr('class', `slider ${orientationClass}`);
 
     const newPos = this.getOptions().position;
+    const width = this.getWidth();
+    let isCoordMoreThatWidth = false;
+    thumbsCoord.forEach((coord, index) => {
+      if (coord > width) {
+        thumbsCoord[index] = width;
+        isCoordMoreThatWidth = true;
+      }
+    });
 
     thumbsArray.forEach((thumb, index) => {
       thumb.setPosition(oldPos, 0);
@@ -112,6 +146,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
     });
 
     this._rangeLine.setOrientation(oldPos, newPos);
+    if (isCoordMoreThatWidth) {
+      this.resizeRangeLine();
+      this.calcValues();
+    }
   }
 
   setRange(rangeState: IState['isRange']) {

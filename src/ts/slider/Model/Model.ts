@@ -12,14 +12,14 @@ export default class Model implements IModel {
       isShowValue,
     };
     this._step = step;
-    this.values = values;
+    this.setValues(values);
   }
 
   _state: IState;
 
   _step: number;
 
-  values: TValues;
+  values!: TValues;
 
   rangeValues!: IRangeValues;
 

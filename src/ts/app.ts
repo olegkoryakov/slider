@@ -12,8 +12,8 @@ const model = new Model(
   1,
   { from: 1, to: 100 },
 );
-const sliderView = new SliderView(model.getState(), parentElement);
+const sliderView = new SliderView(parentElement);
 const configPanel = new ConfigPanelView(parentElement, 'change');
 
-// eslint-disable-next-line no-unused-vars
 const presenter = new Presenter(configPanel, sliderView, model);
+presenter.renderApp();

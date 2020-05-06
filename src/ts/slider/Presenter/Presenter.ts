@@ -1,7 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Converter from './Converter';
 
-export default class Presenter extends EventEmitter {
+export default class Presenter extends EventEmitter implements IPresenter {
   constructor(configPanel: IConfigPanelView, sliderView: ISliderView, model: IModel) {
     super();
     this._sliderView = sliderView;
@@ -12,7 +12,6 @@ export default class Presenter extends EventEmitter {
     this._sliderView.on('change-value', this._changeValue.bind(this));
     this._sliderView.on('change-input-value', this._changeInputValue.bind(this));
     this._sliderView.on('render-range', this._renderRange.bind(this));
-    this._sliderView.calcValues();
 
     this._configPanel.on('change-values', this._changeValues.bind(this));
     this._configPanel.on('change-step', this._changeStep.bind(this));
@@ -28,6 +27,12 @@ export default class Presenter extends EventEmitter {
   _sliderView: ISliderView;
 
   _model: IModel;
+
+  renderApp() {
+    const state = this._model.getState();
+    this._sliderView.render(state);
+    this._sliderView.calcValues();
+  }
 
   _renderRange(rangeInstances: IRangeInstances) {
     const values = this._model.getValues();
