@@ -1,19 +1,25 @@
 export default class Model implements IModel {
-  constructor(orientation: IState['orientation'], isRange: IState['isRange'], isShowValue: IState['isShowValue']) {
-    this.state = {
+  constructor(
+    orientation: IState['orientation'],
+    isRange: IState['isRange'],
+    isShowValue: IState['isShowValue'],
+    step: number,
+    values: TValues,
+  ) {
+    this._state = {
       orientation,
       isRange,
       isShowValue,
     };
-    this.step = 1;
-    this.setValues({ from: 1, to: 100 });
+    this._step = step;
+    this.values = values;
   }
 
-  state: IState;
+  _state: IState;
 
-  step: number;
+  _step: number;
 
-  values!: TValues;
+  values: TValues;
 
   rangeValues!: IRangeValues;
 
@@ -55,29 +61,26 @@ export default class Model implements IModel {
   }
 
   getState(): IState {
-    return this.state;
+    return this._state;
   }
 
-  setStep(step: number): void {
-    this.step = step;
+  setStep(_step: number): void {
+    this._step = _step;
   }
 
   getStep(): number {
-    return this.step;
+    return this._step;
   }
 
-  toggleOrientation() {
-    if (this.state.orientation === 'vertical') this.state.orientation = 'horizontal';
-    else this.state.orientation = 'vertical';
+  setOrientationState(orientation: IState['orientation']) {
+    this._state.orientation = orientation;
   }
 
-  toggleRange() {
-    if (this.state.isRange === true) this.state.isRange = false;
-    else this.state.isRange = true;
+  setRangeState(rangeState: IState['isRange']) {
+    this._state.isRange = rangeState;
   }
 
-  toggleShowValue() {
-    if (this.state.isShowValue === true) this.state.isShowValue = false;
-    else this.state.isShowValue = true;
+  setShowValueState(showValue: IState['isShowValue']) {
+    this._state.isShowValue = showValue;
   }
 }
