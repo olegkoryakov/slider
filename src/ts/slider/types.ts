@@ -150,7 +150,7 @@ interface IRangeInstances {
 interface IConfigPanelView extends IEventEmitter {
   _configPanel: JQuery,
   _callbackPrefix: string,
-  addConfigPanelHandlers(emitCallback: Function): void,
+  addConfigPanelHandlers(): void,
 }
 
 interface IPresenter extends IEventEmitter {

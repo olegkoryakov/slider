@@ -64,8 +64,8 @@ export default class Model implements IModel {
     return this._state;
   }
 
-  setStep(_step: number): void {
-    this._step = _step;
+  setStep(step: number): void {
+    this._step = step;
   }
 
   getStep(): number {

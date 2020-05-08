@@ -42,6 +42,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
 
     const thumbsArray = [this._thumbFrom, this._thumbTo];
     const inputsArray = [this._inputValueFrom, this._inputValueTo];
+
     thumbsArray.forEach((thumb) => {
       thumb.addDragNDropHandler(
         this.getOptions.bind(this),
@@ -132,11 +133,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
 
     const newPos = this.getOptions().position;
     const width = this.getWidth();
-    let isCoordMoreThatWidth = false;
+
     thumbsCoord.forEach((coord, index) => {
       if (coord > width) {
         thumbsCoord[index] = width;
-        isCoordMoreThatWidth = true;
       }
     });
 
@@ -146,10 +146,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     });
 
     this._rangeLine.setOrientation(oldPos, newPos);
-    if (isCoordMoreThatWidth) {
-      this.resizeRangeLine();
-      this.calcValues();
-    }
+    if (this.isRange()) this.resizeRangeLine();
+
+    this.calcValues();
   }
 
   setRange(rangeState: IState['isRange']) {

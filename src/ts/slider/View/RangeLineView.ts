@@ -26,7 +26,7 @@ export default class RangeLineView implements IRangeLineView {
     oldPos: ISliderOptions['position'],
     newPos: ISliderOptions['position'],
   ) {
-    const coord = this._rangeLine.css(oldPos);
+    const coord = this._rangeLine.css(oldPos) || 0;
     this._rangeLine.css({
       [oldPos]: '50%',
       [newPos]: coord,

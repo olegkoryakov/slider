@@ -7,8 +7,10 @@ export default class Converter implements IConverter {
   ) {
     let value = ((range.max - range.min) * (coord / width)) + range.min;
     value = this.calcValueWithStep(value, step);
+
     if (coord >= width) value = range.max;
     if (value < range.min) value = range.min;
+
     return value;
   }
 
@@ -19,7 +21,8 @@ export default class Converter implements IConverter {
   ) {
     let coord = width * (valueOrIndex / (range.max - range.min));
     if (valueOrIndex === range.max) coord = width;
-    if (valueOrIndex === range.min) coord = 0;
+    else if (valueOrIndex === range.min) coord = 0;
+
     return coord;
   }
 

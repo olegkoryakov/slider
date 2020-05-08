@@ -1,4 +1,4 @@
-import EventEmitter from '../ts/slider/eventemitter';
+import EventEmitter from '../EventEmitter';
 
 let eventEmitter: IEventEmitter;
 let eventName: string;
