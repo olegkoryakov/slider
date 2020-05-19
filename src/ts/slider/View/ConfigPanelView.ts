@@ -36,7 +36,6 @@ export default class ConfigPanelView extends EventEmitter implements IConfigPane
 
     function onInputChange(changeE: JQuery.ChangeEvent) {
       const input = changeE.target;
-      if (!(input instanceof HTMLInputElement)) return;
       const { value } = input;
       const callbackType = getCallbackType(changeE.target.classList);
 

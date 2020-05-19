@@ -61,7 +61,7 @@ interface IThumbView {
   hideValue(): void,
   isValueShowing(): boolean,
   setValue(value: string | number): void,
-  setPosition(position: string, coord: number): void,
+  setPosition(position: ISliderOptions['position'], coord: number): void,
   getCoord(position: ISliderOptions['position']): number;
   getWidth(): number,
   addDragNDropHandler(
