@@ -3,17 +3,37 @@ import Model from './slider/Model/Model';
 import SliderView from './slider/View/SliderView';
 import ConfigPanelView from './slider/View/ConfigPanelView';
 
-const parentElement = $('.wrapper');
+// eslint-disable-next-line func-names
+$.fn.sliderApp = function (
+  orientation: IState['orientation'],
+  isRange: IState['isRange'],
+  isShowValue: IState['isShowValue'],
+  step: number,
+  values: TValues,
+) {
+  const model = new Model(
+    orientation,
+    isRange,
+    isShowValue,
+    step,
+    values,
+  );
 
-const model = new Model(
+  const sliderView = new SliderView(this);
+  const configPanel = new ConfigPanelView(this, 'change');
+  const presenter = new Presenter(
+    configPanel,
+    sliderView,
+    model,
+  );
+
+  presenter.renderApp();
+};
+
+$('.wrapper').sliderApp(
   'horizontal',
-  true,
+  false,
   true,
   1,
-  { from: 1, to: 100 },
+  ['1', '2', '3', '4'],
 );
-const sliderView = new SliderView(parentElement);
-const configPanel = new ConfigPanelView(parentElement, 'change');
-
-const presenter = new Presenter(configPanel, sliderView, model);
-presenter.renderApp();
