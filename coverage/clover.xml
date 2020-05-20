@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1589777001158" clover="3.2.0">
-  <project timestamp="1589777001159" name="All files">
+<coverage generated="1589961048821" clover="3.2.0">
+  <project timestamp="1589961048821" name="All files">
     <metrics statements="421" coveredstatements="413" conditionals="104" coveredconditionals="88" methods="102" coveredmethods="99" elements="627" coveredelements="600" complexity="0" loc="421" ncloc="421" packages="4" files="9" classes="9"/>
     <package name="EventEmitter">
       <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="5"/>
@@ -74,7 +74,7 @@
         <line num="24" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="26" count="8" type="stmt"/>
         <line num="29" count="2" type="stmt"/>
-        <line num="30" count="19" type="stmt"/>
+        <line num="30" count="21" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
       </file>
       <file name="Presenter.ts" path="C:\Users\outfl\Desktop\slider\src\ts\slider\Presenter\Presenter.ts">
@@ -169,16 +169,16 @@
         <line num="143" count="1" type="stmt"/>
         <line num="146" count="4" type="stmt"/>
         <line num="147" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="148" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="149" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="150" count="1" type="stmt"/>
-        <line num="152" count="4" type="stmt"/>
-        <line num="155" count="6" type="stmt"/>
+        <line num="148" count="3" type="stmt"/>
+        <line num="150" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="151" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="153" count="4" type="stmt"/>
         <line num="156" count="6" type="stmt"/>
         <line num="157" count="6" type="stmt"/>
         <line num="158" count="6" type="stmt"/>
         <line num="159" count="6" type="stmt"/>
-        <line num="161" count="1" type="stmt"/>
+        <line num="160" count="6" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
       </file>
     </package>
     <package name="View">
