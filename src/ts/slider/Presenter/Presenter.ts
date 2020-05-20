@@ -13,11 +13,11 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this._sliderView.on('change-input-value', this._changeInputValue.bind(this));
     this._sliderView.on('render-range', this._renderRange.bind(this));
 
-    this._configPanel.on('change-values', this._changeValues.bind(this));
-    this._configPanel.on('change-step', this._changeStep.bind(this));
-    this._configPanel.on('change-orientation', this._changeOrientation.bind(this));
-    this._configPanel.on('change-show-values', this._changeShowValues.bind(this));
-    this._configPanel.on('change-range-state', this._changeRangeState.bind(this));
+    this._configPanel.on('change-values', this.changeValues.bind(this));
+    this._configPanel.on('change-step', this.changeStep.bind(this));
+    this._configPanel.on('change-orientation', this.changeOrientation.bind(this));
+    this._configPanel.on('change-show-values', this.changeShowValues.bind(this));
+    this._configPanel.on('change-range-state', this.changeRangeState.bind(this));
   }
 
   _configPanel: IConfigPanelView;
@@ -49,7 +49,7 @@ export default class Presenter extends EventEmitter implements IPresenter {
     rangeInstances.input.setValue(value);
   }
 
-  _changeOrientation() {
+  changeOrientation() {
     const { orientation } = this._model.getState();
     const toggledOrientation = orientation === 'horizontal' ? 'vertical' : 'horizontal';
 
@@ -57,7 +57,7 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this._sliderView.setOrientation(toggledOrientation);
   }
 
-  _changeShowValues() {
+  changeShowValues() {
     const { isShowValue } = this._model.getState();
     const toggledShowValue = !isShowValue;
 
@@ -65,7 +65,7 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this._model.setShowValueState(toggledShowValue);
   }
 
-  _changeRangeState() {
+  changeRangeState() {
     const { isRange } = this._model.getState();
     const toggledRange = !isRange;
 
@@ -73,7 +73,7 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this._sliderView.setRange(toggledRange);
   }
 
-  _changeValues(values: string[]) {
+  changeValues(values: string[]) {
     if (values.length > 2) this._model.setValues(values);
     if (values.length <= 2) {
       const numberValues = values.map((val) => parseInt(val, 10));
@@ -94,7 +94,7 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this._sliderView.calcValues();
   }
 
-  _changeStep(inputValue: string) {
+  changeStep(inputValue: string) {
     let step = parseInt(inputValue, 10);
     if (Number.isNaN(step)) step = 1;
     this._model.setStep(step);
@@ -145,9 +145,10 @@ export default class Presenter extends EventEmitter implements IPresenter {
     } else {
       value = parseInt(value, 10);
       if (Number.isNaN(value)) value = modelValuesRange.min;
-      else if (value < modelValuesRange.min) value = modelValuesRange.min;
-      else if (value > modelValuesRange.max) value = modelValuesRange.max;
       else value = this._converter.calcValueWithStep(value, step);
+
+      if (value < modelValuesRange.min) value = modelValuesRange.min;
+      else if (value > modelValuesRange.max) value = modelValuesRange.max;
 
       coord = this._converter.valueInCoord(value, width, modelValuesRange);
     }

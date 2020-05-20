@@ -53,12 +53,12 @@ describe('Presenter', () => {
     expect(rangeInstances.input.setValue).toHaveBeenCalledWith(100);
 
 
-    presenter._changeRangeState();
+    presenter.changeRangeState();
     rangeInstances.input.setValue = jest.fn();
     rangeInstances.thumb.setValue = jest.fn();
     rangeInstances.thumb.setPosition = jest.fn();
 
-    presenter._changeValues(['1', '2', '3']);
+    presenter.changeValues(['1', '2', '3']);
 
     presenter._renderRange(rangeInstances);
     expect(rangeInstances.thumb.setPosition).toHaveBeenCalledWith('top', 0);
@@ -70,7 +70,7 @@ describe('Presenter', () => {
     presenter._model.setOrientationState = jest.fn();
     presenter._sliderView.setOrientation = jest.fn();
 
-    presenter._changeOrientation();
+    presenter.changeOrientation();
 
     expect(presenter._model.setOrientationState).toHaveBeenCalledWith('vertical');
     expect(presenter._sliderView.setOrientation).toHaveBeenCalledWith('vertical');
@@ -79,7 +79,7 @@ describe('Presenter', () => {
   test('changeShowValues', () => {
     presenter._sliderView.setShowValue = jest.fn();
     presenter._model.setShowValueState = jest.fn();
-    presenter._changeShowValues();
+    presenter.changeShowValues();
 
     expect(presenter._sliderView.setShowValue).toHaveBeenCalledWith(true);
     expect(presenter._model.setShowValueState).toHaveBeenCalledWith(true);
@@ -89,7 +89,7 @@ describe('Presenter', () => {
     presenter._sliderView.setRange = jest.fn();
     presenter._model.setRangeState = jest.fn();
 
-    presenter._changeRangeState();
+    presenter.changeRangeState();
     expect(presenter._sliderView.setRange).toHaveBeenCalledWith(true);
     expect(presenter._model.setRangeState).toHaveBeenCalledWith(true);
   });
@@ -99,26 +99,26 @@ describe('Presenter', () => {
 
     step = 'asd';
     presenter._model.setStep = jest.fn();
-    presenter._changeStep(step);
+    presenter.changeStep(step);
 
     expect(presenter._model.setStep).toHaveBeenCalledWith(1);
 
     step = '123';
     presenter._model.setStep = jest.fn();
-    presenter._changeStep(step);
+    presenter.changeStep(step);
 
     expect(presenter._model.setStep).toHaveBeenCalledWith(123);
   });
 
   test('changeValues', () => {
     model.setValues = jest.fn();
-    presenter._changeValues(['1', '123']);
+    presenter.changeValues(['1', '123']);
 
     expect(model.setValues).toHaveBeenCalledWith({ from: 1, to: 123 });
 
 
     model.setValues = jest.fn();
-    presenter._changeValues(['123']);
+    presenter.changeValues(['123']);
 
     expect(model.setValues).toHaveBeenCalledWith({ from: 1, to: 123 });
   });
@@ -138,7 +138,7 @@ describe('Presenter', () => {
     expect(thumb.setValue).toHaveBeenCalledWith(1);
 
 
-    presenter._changeValues(['3', '2', '1']);
+    presenter.changeValues(['3', '2', '1']);
     expect(input.setValue).toHaveBeenCalledWith('3');
     expect(thumb.setValue).toHaveBeenCalledWith('3');
   });
