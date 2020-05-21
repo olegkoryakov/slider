@@ -32,7 +32,6 @@
 }
 
 .slider__thumb {
-  user-select: none;
   position: absolute;
   z-index: 1;
   cursor: pointer;
@@ -52,8 +51,7 @@
   border: 2px solid darkseagreen;
 }
 
-.slider__value {
-  user-select: text;
+.slider__value { 
   position: absolute;
   box-sizing: border-box;
 

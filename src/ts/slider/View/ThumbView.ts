@@ -77,6 +77,8 @@ export default class ThumbView implements IThumbView {
       let startCoord = downE[options.clientAxis];
 
       $thumb.css('z-index', zIndex + 1);
+      $thumb.css('user-select', 'none');
+
       const onMouseMove = function onDocumentMouseMoveHandler(moveE: JQuery.MouseMoveEvent) {
         const shift = startCoord - moveE[options.clientAxis];
         let newCoord = Math.round($thumb.position()[options.position] - shift);
@@ -92,6 +94,7 @@ export default class ThumbView implements IThumbView {
 
       function onMouseUp() {
         $thumb.css('z-index', zIndex);
+        $thumb.css('user-select', '');
         $(document).unbind('mousemove', bindedOnMouseMove);
         $(document).unbind('mouseup', onMouseUp);
       }
