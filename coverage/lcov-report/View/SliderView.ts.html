@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.16% </span>
+                <span class="strong">91.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>134/147</span>
+                <span class='fraction'>135/148</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.03% </span>
+                <span class="strong">94.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>126/134</span>
+                <span class='fraction'>127/135</span>
             </div>
         
             
@@ -297,7 +297,8 @@
 <a name='L238'></a><a href='#L238'>238</a>
 <a name='L239'></a><a href='#L239'>239</a>
 <a name='L240'></a><a href='#L240'>240</a>
-<a name='L241'></a><a href='#L241'>241</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -329,6 +330,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
@@ -370,6 +397,7 @@
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -382,32 +410,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -545,42 +547,68 @@ import ValueInputView from './ValueInputView';
 export default class SliderView extends EventEmitter implements ISliderView {
   constructor(node: JQuery) {
     super();
-    this._node = node;
-    this._slider = $('&lt;div class="slider"&gt;&lt;div class="slider__values"&gt;&lt;/div&gt;&lt;div class="slider__line"&gt;&lt;/div&gt;&lt;/div&gt;');
-    this._sliderLine = this._slider.find('.slider__line');
-    this._rangeLine = new RangeLineView(this._sliderLine);
-    this._thumbFrom = new ThumbView('from', this._sliderLine);
-    this._thumbTo = new ThumbView('to', this._sliderLine);
-    this._inputValueFrom = new ValueInputView('from', this._slider.find('.slider__values'));
-    this._inputValueTo = new ValueInputView('to', this._slider.find('.slider__values'));
+    this.$node = node;
+    this.$slider = $('&lt;div class="slider"&gt;&lt;div class="slider__values"&gt;&lt;/div&gt;&lt;div class="slider__line"&gt;&lt;/div&gt;&lt;/div&gt;');
+    this.$sliderLine = this.$slider.find('.slider__line');
+    this.rangeLine = new RangeLineView(this.$sliderLine);
+    this.thumbFrom = new ThumbView('from', this.$sliderLine);
+    this.thumbTo = new ThumbView('to', this.$sliderLine);
+    this.inputValueFrom = new ValueInputView('from', this.$slider.find('.slider__values'));
+    this.inputValueTo = new ValueInputView('to', this.$slider.find('.slider__values'));
   }
 &nbsp;
-  _node: JQuery;
+  private $node: JQuery;
 &nbsp;
-  _inputValueFrom: IValueInputView;
+  private $slider: JQuery;
 &nbsp;
-  _inputValueTo: IValueInputView;
+  private $sliderLine: JQuery;
 &nbsp;
-  _rangeLine: IRangeLineView;
+  private inputValueFrom: IValueInputView;
 &nbsp;
-  _thumbFrom: IThumbView;
+  private inputValueTo: IValueInputView;
 &nbsp;
-  _thumbTo: IThumbView;
+  private rangeLine: IRangeLineView;
 &nbsp;
-  _slider: JQuery;
+  private thumbFrom: IThumbView;
 &nbsp;
-  _sliderLine: JQuery;
+  private thumbTo: IThumbView;
+&nbsp;
+  private onSliderLineClick(clickE: JQuery.ClickEvent) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (clickE.target !== this.$sliderLine[0]) <span class="cstat-no" title="statement not covered" >return;</span>
+    const width = this.getWidth();
+    const { position } = this.getOptions();
+    const offsetName = position === 'left' ? 'offsetX' : <span class="branch-1 cbranch-no" title="branch not covered" >'offsetY';</span>
+    let offset = clickE[offsetName];
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (offset &gt; width) <span class="cstat-no" title="statement not covered" >offset = width;</span>
+    else <span class="missing-if-branch" title="if path not taken" >I</span>if (offset &lt; 0) <span class="cstat-no" title="statement not covered" >offset = 0;</span>
+&nbsp;
+    let closestThumb = this.thumbFrom;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (this.isRange()) {
+      const thumbsArray = [this.thumbTo, this.thumbFrom];
+      const thumbsCoords = thumbsArray
+        .map((thumb) =&gt; thumb.getCoord(position));
+      const distances = thumbsCoords.map((coord) =&gt; Math.abs(offset - coord));
+      closestThumb = thumbsArray[
+        distances.findIndex((distance) =&gt; distance === Math.min(...distances))
+      ];
+    }
+&nbsp;
+    closestThumb.setPosition(position, offset);
+&nbsp;
+    this.emit('change-value', closestThumb);
+  }
 &nbsp;
   render(state: IState) {
-    this._slider.appendTo(this._node);
-    this._sliderLine.click(this._onSliderLineClick.bind(this));
+    this.$slider.appendTo(this.$node);
+    this.$sliderLine.click(this.onSliderLineClick.bind(this));
     this.setOrientation(state.orientation);
     this.setRange(state.isRange);
     this.setShowValue(state.isShowValue);
     this.addWindowHandler();
 &nbsp;
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
-    const inputsArray = [this._inputValueFrom, this._inputValueTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
+    const inputsArray = [this.inputValueFrom, this.inputValueTo];
 &nbsp;
     thumbsArray.forEach((thumb) =&gt; {
       thumb.addDragNDropHandler(
@@ -600,16 +628,17 @@ export default class SliderView extends EventEmitter implements ISliderView {
   }
 &nbsp;
   calcValues() {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     thumbsArray.forEach((thumb) =&gt; {
       this.emit('change-value', thumb);
     });
   }
 &nbsp;
   addWindowHandler() {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     const that = this;
-    function <span class="fstat-no" title="function not covered" >onWindowResize(</span>) {
+&nbsp;
+    const onWindowResize = function <span class="fstat-no" title="function not covered" >onWindowResizeHandler(</span>) {
       const { <span class="cstat-no" title="statement not covered" >position </span>} = that.getOptions();
       const width = <span class="cstat-no" title="statement not covered" >that.getWidth();</span>
       const thumbsPositions = <span class="cstat-no" title="statement not covered" >thumbsArray.map(<span class="fstat-no" title="function not covered" >(t</span>humb) =&gt; <span class="cstat-no" title="statement not covered" >thumb.getCoord(position));</span></span>
@@ -619,56 +648,30 @@ export default class SliderView extends EventEmitter implements ISliderView {
         }
       });
 <span class="cstat-no" title="statement not covered" >      that.calcValues();</span>
-    }
+    };
 &nbsp;
     $(window).resize(onWindowResize.bind(this));
   }
 &nbsp;
-  _onSliderLineClick(clickE: JQuery.ClickEvent) {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (clickE.target !== this._sliderLine[0]) <span class="cstat-no" title="statement not covered" >return;</span>
-    const width = this.getWidth();
-    const { position } = this.getOptions();
-    const offsetName = position === 'left' ? 'offsetX' : <span class="branch-1 cbranch-no" title="branch not covered" >'offsetY';</span>
-    let offset = clickE[offsetName];
-&nbsp;
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (offset &gt; width) <span class="cstat-no" title="statement not covered" >offset = width;</span>
-    else <span class="missing-if-branch" title="if path not taken" >I</span>if (offset &lt; 0) <span class="cstat-no" title="statement not covered" >offset = 0;</span>
-&nbsp;
-    let closestThumb = this._thumbFrom;
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (this.isRange()) {
-      const thumbsArray = [this._thumbTo, this._thumbFrom];
-      const thumbsCoords = thumbsArray
-        .map((thumb) =&gt; thumb.getCoord(position));
-      const distances = thumbsCoords.map((coord) =&gt; Math.abs(offset - coord));
-      closestThumb = thumbsArray[
-        distances.findIndex((distance) =&gt; distance === Math.min(...distances))
-      ];
-    }
-&nbsp;
-    closestThumb.setPosition(position, offset);
-&nbsp;
-    this.emit('change-value', closestThumb);
-  }
-&nbsp;
   getThumbByModifier(modifier: TModifier) {
-    const thumbsArray = [this._thumbTo, this._thumbFrom];
+    const thumbsArray = [this.thumbTo, this.thumbFrom];
     const thumbView = thumbsArray.filter((thumb) =&gt; thumb.getModifier() === modifier)[0];
     return thumbView;
   }
 &nbsp;
   getInputByModifier(modifier: TModifier) {
-    const inputsArray = [this._inputValueFrom, this._inputValueTo];
+    const inputsArray = [this.inputValueFrom, this.inputValueTo];
     const inputView = inputsArray.filter((input) =&gt; input.getModifier() === modifier)[0];
     return inputView;
   }
 &nbsp;
   setOrientation(orientationState: IState['orientation']) {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     const oldPos = this.getOptions().position;
     const thumbsCoord = thumbsArray.map((thumb) =&gt; thumb.getCoord(oldPos));
 &nbsp;
     const orientationClass = `slider--${orientationState}`;
-    this._slider.attr('class', `slider ${orientationClass}`);
+    this.$slider.attr('class', `slider ${orientationClass}`);
 &nbsp;
     const newPos = this.getOptions().position;
     const width = this.getWidth();
@@ -684,7 +687,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
       thumb.setPosition(newPos, thumbsCoord[index]);
     });
 &nbsp;
-    this._rangeLine.setOrientation(oldPos, newPos);
+    this.rangeLine.setOrientation(oldPos, newPos);
     <span class="missing-if-branch" title="else path not taken" >E</span>if (this.isRange()) this.resizeRangeLine();
 &nbsp;
     this.calcValues();
@@ -694,34 +697,34 @@ export default class SliderView extends EventEmitter implements ISliderView {
     const currentRangeState = this.isRange();
     if (currentRangeState !== rangeState) {
       if (rangeState) {
-        this._thumbTo.appendToNode();
-        this._rangeLine.appendToNode();
-        this._inputValueTo.appendToNode();
-        this.emit('render-range', { thumb: this._thumbTo, input: this._inputValueTo });
+        this.thumbTo.appendToNode();
+        this.rangeLine.appendToNode();
+        this.inputValueTo.appendToNode();
+        this.emit('render-range', { thumb: this.thumbTo, input: this.inputValueTo });
         this.resizeRangeLine();
       } else {
-        this._thumbTo.removeFromDOM();
-        this._inputValueTo.removeFromDOM();
-        this._rangeLine.removeFromDOM();
+        this.thumbTo.removeFromDOM();
+        this.inputValueTo.removeFromDOM();
+        this.rangeLine.removeFromDOM();
       }
     }
   }
 &nbsp;
   isRange() {
-    return this._thumbTo.isInDOM() &amp;&amp; this._rangeLine.isInDOM();
+    return this.thumbTo.isInDOM() &amp;&amp; this.rangeLine.isInDOM();
   }
 &nbsp;
   setShowValue(showValueState: IState['isShowValue']) {
-    const currentShowValueState = this._thumbTo.isValueShowing()
-    &amp;&amp; this._thumbFrom.isValueShowing();
+    const currentShowValueState = this.thumbTo.isValueShowing()
+    &amp;&amp; this.thumbFrom.isValueShowing();
 &nbsp;
     if (currentShowValueState !== showValueState) {
       if (showValueState) {
-        this._thumbFrom.showValue();
-        this._thumbTo.showValue();
+        this.thumbFrom.showValue();
+        this.thumbTo.showValue();
       } else {
-        this._thumbFrom.hideValue();
-        this._thumbTo.hideValue();
+        this.thumbFrom.hideValue();
+        this.thumbTo.hideValue();
       }
     }
   }
@@ -729,9 +732,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
   resizeRangeLine() {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isRange) <span class="cstat-no" title="statement not covered" >return;</span>
     const { position } = this.getOptions();
-    const gap = this._thumbFrom.getWidth() / 2;
-    let coordFrom = this._thumbFrom.getCoord(position);
-    let coordTo = this._thumbTo.getCoord(position);
+    const gap = this.thumbFrom.getWidth() / 2;
+    let coordFrom = this.thumbFrom.getCoord(position);
+    let coordTo = this.thumbTo.getCoord(position);
 &nbsp;
     if (coordFrom &gt; coordTo) {
       const temp = coordFrom;
@@ -739,7 +742,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
       coordTo = temp;
     }
 &nbsp;
-    this._rangeLine.setRangeLineSizeFromCoords(
+    this.rangeLine.setRangeLineSizeFromCoords(
       coordFrom,
       coordTo,
       gap,
@@ -750,7 +753,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
   getOptions() {
     let clientAxis: ISliderOptions['clientAxis'];
     let position: ISliderOptions['position'];
-    if (this._slider.hasClass('slider--horizontal')) {
+    if (this.$slider.hasClass('slider--horizontal')) {
       clientAxis = 'clientX';
       position = 'left';
     } else {
@@ -769,10 +772,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
   getWidth() {
     const { position } = this.getOptions();
     const prop = position === 'left' ? <span class="branch-0 cbranch-no" title="branch not covered" >'innerWidth' </span>: 'innerHeight';
-    const sliderLineWidth = this._slider[prop]() || 0;
-    const sliderLineGap = (this._sliderLine.outerWidth() || 0)
-                          - (this._sliderLine.innerWidth() || 0);
-    const innerWidth = Math.floor(sliderLineWidth - this._thumbFrom.getWidth() - sliderLineGap);
+    const sliderLineWidth = this.$slider[prop]() || 0;
+    const sliderLineGap = (this.$sliderLine.outerWidth() || 0)
+                          - (this.$sliderLine.innerWidth() || 0);
+    const innerWidth = Math.floor(sliderLineWidth - this.thumbFrom.getWidth() - sliderLineGap);
 &nbsp;
     return innerWidth;
   }
@@ -784,7 +787,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed May 20 2020 14:50:48 GMT+0700 (GMT+07:00)
+                at Thu May 21 2020 12:56:33 GMT+0700 (GMT+07:00)
             </div>
         </div>
         <script src="../prettify.js"></script>

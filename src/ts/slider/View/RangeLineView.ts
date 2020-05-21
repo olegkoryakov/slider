@@ -1,33 +1,33 @@
 export default class RangeLineView implements IRangeLineView {
   constructor(parentNode: JQuery) {
-    this._rangeLine = $('<div class="slider__range-line"></div>');
-    this._node = parentNode;
+    this.$rangeLine = $('<div class="slider__range-line"></div>');
+    this.$node = parentNode;
     this.appendToNode();
   }
 
-  _rangeLine: JQuery;
+  private $rangeLine: JQuery;
 
-  _node: JQuery
+  private $node: JQuery
 
   appendToNode() {
-    this._rangeLine.appendTo(this._node);
+    this.$rangeLine.appendTo(this.$node);
   }
 
   removeFromDOM() {
-    this._rangeLine.remove();
+    this.$rangeLine.remove();
   }
 
   isInDOM() {
-    const flag = this._node.find(this._rangeLine).length > 0;
-    return flag;
+    const isInDOM = this.$node.find(this.$rangeLine).length > 0;
+    return isInDOM;
   }
 
   setOrientation(
     oldPos: ISliderOptions['position'],
     newPos: ISliderOptions['position'],
   ) {
-    const coord = this._rangeLine.css(oldPos) || 0;
-    this._rangeLine.css({
+    const coord = this.$rangeLine.css(oldPos) || 0;
+    this.$rangeLine.css({
       [oldPos]: '50%',
       [newPos]: coord,
     });
@@ -41,7 +41,7 @@ export default class RangeLineView implements IRangeLineView {
   ) {
     const rangeLineWidth = coordTo - coordFrom;
 
-    this._rangeLine.css({
+    this.$rangeLine.css({
       'flex-basis': rangeLineWidth,
       [position]: coordFrom + gap,
     });

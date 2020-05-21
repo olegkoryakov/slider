@@ -3,7 +3,7 @@ export default class EventEmitter implements IEventEmitter {
     this.events = {};
   }
 
-  events: IEvents;
+  private events: IEvents;
 
   on(eventName: string, callback: Function): void {
     if (this.events[eventName] === undefined) this.events[eventName] = [];

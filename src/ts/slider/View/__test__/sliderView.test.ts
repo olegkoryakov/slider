@@ -1,49 +1,22 @@
 import SliderView from '../SliderView';
 
-interface IExtendedSliderView extends ISliderView {
-  getThumbs(): IThumbView[],
-  getInputs(): IValueInputView[],
-  getRangeLine(): IRangeLineView,
-  getSliderLine(): JQuery,
-}
-
 const parentNode = $('<div></div>');
-
-class ExtendedSliderView extends SliderView implements IExtendedSliderView {
-  constructor() {
-    super(parentNode);
-  }
-
-  getThumbs() {
-    return [this._thumbFrom, this._thumbTo];
-  }
-
-  getInputs() {
-    return [this._inputValueFrom, this._inputValueTo];
-  }
-
-  getSliderLine() {
-    return this._sliderLine;
-  }
-
-  getRangeLine() {
-    return this._rangeLine;
-  }
-}
-
-let sliderView: IExtendedSliderView;
 const state: IState = {
   orientation: 'horizontal',
   isRange: true,
   isShowValue: true,
 };
+let sliderView: ISliderView;
+let thumbsViewArray: IThumbView[];
 
 describe('SliderView', () => {
   beforeEach(() => {
-    sliderView = new ExtendedSliderView();
+    sliderView = new SliderView(parentNode);
     sliderView.emit = jest.fn();
     sliderView.getWidth = () => 123;
     sliderView.render(state);
+    // @ts-ignore
+    thumbsViewArray = [sliderView.thumbFrom, sliderView.thumbTo];
   });
 
   test('calcValues should emit custom events on 2 thumbs', () => {
@@ -76,27 +49,27 @@ describe('SliderView', () => {
 
   describe('dragNdrop handlers', () => {
     let thumbView: IThumbView;
-    let thumb: JQuery;
+    let $thumb: JQuery;
     let mouseMoveEvent: JQuery.Event;
     let mouseDownEvent: JQuery.Event;
     let mouseUpEvent: JQuery.Event;
     let currentPosition = 0;
     beforeEach(() => {
-      [thumbView] = sliderView.getThumbs();
-      // eslint-disable-next-line no-underscore-dangle
-      thumb = thumbView._thumb;
+      [thumbView] = thumbsViewArray;
+      // @ts-ignore
+      $thumb = thumbView.$thumb;
       mouseMoveEvent = jQuery.Event('mousemove', { clientX: 20 });
       mouseDownEvent = jQuery.Event('mousedown', { clientX: 0 });
       mouseUpEvent = jQuery.Event('mouseup');
       thumbView.setPosition = (position: ISliderOptions['position'], coord: number) => {
         currentPosition = coord;
       };
-      thumb.css('z-index', 1);
+      $thumb.css('z-index', 1);
     });
 
     test('mousedown, mousemove', () => {
       const width = sliderView.getWidth();
-      thumb.trigger(mouseDownEvent);
+      $thumb.trigger(mouseDownEvent);
       $(document).trigger(mouseMoveEvent);
       $(document).trigger(mouseUpEvent);
 
@@ -104,30 +77,30 @@ describe('SliderView', () => {
 
       mouseMoveEvent.clientX = width + 1;
       // if coord more than width, coord should be equal width
-      thumb.trigger(mouseDownEvent);
+      $thumb.trigger(mouseDownEvent);
       $(document).trigger(mouseMoveEvent);
       $(document).trigger(mouseUpEvent);
       expect(currentPosition).toBe(width);
 
       mouseMoveEvent.clientX = -1;
       // if coord less than 0, coord should be equal 0
-      thumb.trigger(mouseDownEvent);
+      $thumb.trigger(mouseDownEvent);
       $(document).trigger(mouseMoveEvent);
       $(document).trigger(mouseUpEvent);
       expect(currentPosition).toBe(0);
     });
 
     test('mouseup', () => {
-      thumb.trigger(mouseDownEvent);
+      $thumb.trigger(mouseDownEvent);
       $(document).trigger(mouseMoveEvent);
       $(document).trigger(mouseUpEvent);
-      expect(thumb.css('z-index')).toBe('1');
+      expect($thumb.css('z-index')).toBe('1');
     });
   });
 
   test('sliderLineHandler', () => {
-    const sliderLine = sliderView.getSliderLine();
-    const thumbsView = sliderView.getThumbs();
+    // @ts-ignore
+    const sliderLine = sliderView.$sliderLine;
     const clickEvent = jQuery.Event('click', { offsetX: 15 });
     const coords = [0, 20];
 
@@ -136,7 +109,7 @@ describe('SliderView', () => {
       2: coords[1],
     };
 
-    thumbsView.forEach((thumb, index) => {
+    thumbsViewArray.forEach((thumb, index) => {
       // eslint-disable-next-line no-param-reassign
       thumb.setPosition = (position: ISliderOptions['position'], coord: number) => {
         positionObj[index + 1] = coord;
@@ -147,12 +120,13 @@ describe('SliderView', () => {
     });
 
     sliderLine.trigger(clickEvent);
-    expect(thumbsView[1].getCoord('left')).toBe(15);
+    expect(thumbsViewArray[1].getCoord('left')).toBe(15);
   });
 
   test('setRange', () => {
-    const thumbTo = sliderView.getThumbs()[1];
-    const rangeLine = sliderView.getRangeLine();
+    const thumbTo = thumbsViewArray[1];
+    // @ts-ignore
+    const { rangeLine } = sliderView;
 
     sliderView.setRange(false);
     expect(thumbTo.isInDOM() && rangeLine.isInDOM()).toBe(false);
@@ -163,9 +137,7 @@ describe('SliderView', () => {
   });
 
   test('setShowValue', () => {
-    const thumbsView = sliderView.getThumbs();
-
-    const isValueShowing = () => thumbsView.every((thumb) => thumb.isValueShowing());
+    const isValueShowing = () => thumbsViewArray.every((thumbView) => thumbView.isValueShowing());
 
     sliderView.setShowValue(false);
     expect(isValueShowing()).toBe(false);
@@ -175,7 +147,8 @@ describe('SliderView', () => {
   });
 
   test('resizeRangeLine', () => {
-    const rangeLine = sliderView.getRangeLine();
+    // @ts-ignore
+    const { rangeLine } = sliderView;
     rangeLine.setRangeLineSizeFromCoords = jest.fn();
 
     const coords: any = {
@@ -183,11 +156,11 @@ describe('SliderView', () => {
       2: 0,
     };
 
-    sliderView.getThumbs().forEach((thumb, index) => {
+    thumbsViewArray.forEach((thumbView, index) => {
       // eslint-disable-next-line no-param-reassign
-      thumb.getCoord = () => coords[index + 1];
+      thumbView.getCoord = () => coords[index + 1];
       // eslint-disable-next-line no-param-reassign
-      thumb.getWidth = () => 20;
+      thumbView.getWidth = () => 20;
     });
 
     sliderView.resizeRangeLine();

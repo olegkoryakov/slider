@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>34/34</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/30</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
@@ -110,16 +110,12 @@
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -127,8 +123,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -139,17 +133,17 @@
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -172,54 +166,51 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import EventEmitter from '../EventEmitter/EventEmitter';
 &nbsp;
 export default class ConfigPanelView extends EventEmitter implements IConfigPanelView {
-  constructor(node: JQuery, callbackPrefix: string) {
+  constructor(node: JQuery) {
     super();
-    this._callbackPrefix = callbackPrefix;
-    this._configPanel = $(`&lt;div class="config-panel"&gt;&lt;input type="text" placeholder="Enter values range/values array" class="config-panel__input config-panel__input--values"&gt;
+    this.$configPanel = $(`&lt;div class="config-panel"&gt;&lt;input type="text" placeholder="Enter values range/values array" class="config-panel__input config-panel__input--values"&gt;
                             &lt;input type="text" placeholder="Enter step" class="config-panel__input config-panel__input--step"&gt;
                             &lt;button class="config-panel__button config-panel__button--orientation" type="button"&gt;Toggle orientation&lt;/button&gt;
                             &lt;button class="config-panel__button config-panel__button--show-values" type="button"&gt;Toggle show value&lt;/button&gt;
                             &lt;button class="config-panel__button config-panel__button--range-state" type="button"&gt;Toggle range&lt;/button&gt;
                           &lt;/div&gt;`);
     this.addConfigPanelHandlers();
-    node.append(this._configPanel);
+    node.append(this.$configPanel);
   }
 &nbsp;
-  _configPanel: JQuery;
-&nbsp;
-  _callbackPrefix: string;
+  $configPanel: JQuery;
 &nbsp;
   addConfigPanelHandlers() {
     const that = this;
-    const buttons = this._configPanel.find('.config-panel__button');
-    const inputs = this._configPanel.find('.config-panel__input');
-    const prefix = this._callbackPrefix;
+    const buttons = this.$configPanel.find('.config-panel__button');
+    const inputs = this.$configPanel.find('.config-panel__input');
+    const prefix = 'change';
 &nbsp;
-    function getCallbackType(classList: DOMTokenList) {
+    const getCallbackType = function getCallbackTypeFromClassList(classList: DOMTokenList) {
       const array = Array.from(classList);
       return array.join('').split('--')[1];
-    }
+    };
 &nbsp;
-    function onButtonClick(clickE: JQuery.ClickEvent) {
+    const onButtonClick = function onButtonClickHandler(clickE: JQuery.ClickEvent) {
       const callbackType: string = getCallbackType(clickE.target.classList);
       that.emit(`${prefix}-${callbackType}`, null);
-    }
+    };
 &nbsp;
-    function onInputChange(changeE: JQuery.ChangeEvent) {
+    const onInputChange = function onInputChangeHandler(changeE: JQuery.ChangeEvent) {
       const input = changeE.target;
       const { value } = input;
       const callbackType = getCallbackType(changeE.target.classList);
 &nbsp;
       if (callbackType === 'step') {
         let step = parseInt(value, 10);
-        if (Number.isNaN(step)) step = 1;
+        if (Number.isNaN(step) || step &lt; 0) step = 1;
         that.emit(`${prefix}-${callbackType}`, step);
       } else <span class="missing-if-branch" title="else path not taken" >E</span>if (callbackType === 'values') {
         const regExp = new RegExp(',?\\s');
         const values = value.split(regExp);
         that.emit(`${prefix}-${callbackType}`, values);
       }
-    }
+    };
 &nbsp;
     buttons.click(onButtonClick.bind(this));
     inputs.change(onInputChange.bind(this));
@@ -232,7 +223,7 @@ export default class ConfigPanelView extends EventEmitter implements IConfigPane
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed May 20 2020 14:50:48 GMT+0700 (GMT+07:00)
+                at Thu May 21 2020 12:56:33 GMT+0700 (GMT+07:00)
             </div>
         </div>
         <script src="../prettify.js"></script>

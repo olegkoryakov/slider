@@ -23,8 +23,8 @@ describe('rangeLineView', () => {
     rangeLineView = new RangeLineView(parentNode);
   });
 
-  test('isInDom method', () => {
-    const isInDOM = true; // because appendToNode method called in constructor
+  test('isInDom', () => {
+    const isInDOM = true; // because appendToNode method was called in constructor
 
     expect(rangeLineView.isInDOM()).toBe(isInDOM);
   });

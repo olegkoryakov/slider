@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>58/58</span>
+                <span class='fraction'>60/60</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>56/56</span>
+                <span class='fraction'>58/58</span>
             </div>
         
             
@@ -235,15 +235,14 @@
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -264,6 +263,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
@@ -271,64 +271,64 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export default class ThumbView implements IThumbView {
   constructor(modifier: TModifier, parentNode: JQuery) {
-    this._modifier = modifier;
-    this._thumb = $(`&lt;div class="slider__thumb slider__thumb--${this._modifier}"&gt;&lt;div class="slider__value"&gt;&lt;/div&gt;&lt;/div&gt;`);
-    this._node = parentNode;
+    this.modifier = modifier;
+    this.$thumb = $(`&lt;div class="slider__thumb slider__thumb--${this.modifier}"&gt;&lt;div class="slider__value"&gt;&lt;/div&gt;&lt;/div&gt;`);
+    this.$node = parentNode;
     this.appendToNode();
   }
 &nbsp;
-  _node: JQuery;
+  private $node: JQuery;
 &nbsp;
-  _thumb: JQuery;
+  private $thumb: JQuery;
 &nbsp;
-  _modifier: TModifier;
+  private modifier: TModifier;
 &nbsp;
   appendToNode() {
-    this._thumb.appendTo(this._node);
+    this.$thumb.appendTo(this.$node);
   }
 &nbsp;
   isInDOM() {
-    const flag = this._node.find(this._thumb).length &gt; 0;
-    return flag;
+    const isInDOM = this.$node.find(this.$thumb).length &gt; 0;
+    return isInDOM;
   }
 &nbsp;
   removeFromDOM() {
-    this._thumb.detach();
+    this.$thumb.detach();
   }
 &nbsp;
   setValue(value: string | number) {
-    this._thumb.find('.slider__value').text(value);
+    this.$thumb.find('.slider__value').text(value);
   }
 &nbsp;
   setPosition(position: ISliderOptions['position'], coord: number) {
-    this._thumb.css(position, coord);
+    this.$thumb.css(position, coord);
   }
 &nbsp;
   getCoord(position: ISliderOptions['position']): number {
-    return Math.round(this._thumb.position()[position]);
+    return Math.round(this.$thumb.position()[position]);
   }
 &nbsp;
   getModifier() {
-    return this._modifier;
+    return this.modifier;
   }
 &nbsp;
   hideValue() {
-    const thumbValue = this._thumb.find('.slider__value');
+    const thumbValue = this.$thumb.find('.slider__value');
     thumbValue.hide(100, 'linear');
   }
 &nbsp;
   showValue() {
-    const thumbValue = this._thumb.find('.slider__value');
+    const thumbValue = this.$thumb.find('.slider__value');
     thumbValue.show(100, 'linear');
   }
 &nbsp;
   isValueShowing() {
-    const thumbValue = this._thumb.find('.slider__value');
+    const thumbValue = this.$thumb.find('.slider__value');
     return thumbValue.css('display') !== 'none';
   }
 &nbsp;
   getWidth() {
-    const width = this._thumb.outerWidth() || 0;
+    const width = this.$thumb.outerWidth() || 0;
     return width;
   }
 &nbsp;
@@ -338,41 +338,41 @@
     emitCallbackType: string,
     getWidthCallback: Function,
   ) {
-    const thumb = this._thumb;
+    const { $thumb } = this;
     const that = this;
 &nbsp;
-    function onThumbMouseDown(downE: JQuery.MouseDownEvent) {
+    const onThumbMouseDown = function onThumbMouseDownHandler(downE: JQuery.MouseDownEvent) {
       const width: number = getWidthCallback();
-      const zIndex = parseInt(thumb.css('z-index'), 10);
+      const zIndex = parseInt($thumb.css('z-index'), 10);
       const options: ISliderOptions = getOptionsCallback();
       let startCoord = downE[options.clientAxis];
 &nbsp;
-      thumb.css('z-index', zIndex + 1);
-&nbsp;
-      function onMouseMove(moveE: JQuery.MouseMoveEvent) {
+      $thumb.css('z-index', zIndex + 1);
+      const onMouseMove = function onDocumentMouseMoveHandler(moveE: JQuery.MouseMoveEvent) {
         const shift = startCoord - moveE[options.clientAxis];
-        let newCoord = Math.round(thumb.position()[options.position] - shift);
+        let newCoord = Math.round($thumb.position()[options.position] - shift);
         startCoord = moveE[options.clientAxis];
 &nbsp;
         if (newCoord &gt; width) newCoord = width;
         else if (newCoord &lt; 0) newCoord = 0;
         emitCallback(emitCallbackType, that);
         that.setPosition(options.position, newCoord);
-      }
+      };
 &nbsp;
       const bindedOnMouseMove = onMouseMove.bind(that);
 &nbsp;
       function onMouseUp() {
-        thumb.css('z-index', zIndex);
+        $thumb.css('z-index', zIndex);
         $(document).unbind('mousemove', bindedOnMouseMove);
         $(document).unbind('mouseup', onMouseUp);
       }
 &nbsp;
       $(document).mousemove(bindedOnMouseMove);
       $(document).mouseup(onMouseUp);
-    }
+    };
+&nbsp;
     const bindedOnThumbMouseDown = onThumbMouseDown.bind(that);
-    thumb.mousedown(bindedOnThumbMouseDown);
+    $thumb.mousedown(bindedOnThumbMouseDown);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -382,7 +382,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed May 20 2020 14:50:48 GMT+0700 (GMT+07:00)
+                at Thu May 21 2020 12:56:33 GMT+0700 (GMT+07:00)
             </div>
         </div>
         <script src="../prettify.js"></script>

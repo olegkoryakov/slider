@@ -15,7 +15,9 @@ describe('EventEmitter: ', () => {
   });
 
   test('Method .on should add callback in events object', () => {
+    // @ts-ignore
     expect(eventEmitter.events[eventName]).toBeInstanceOf(Array);
+    // @ts-ignore
     expect(eventEmitter.events[eventName]).toEqual(testCbArray);
   });
 

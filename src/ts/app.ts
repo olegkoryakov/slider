@@ -20,7 +20,7 @@ const defaults: IOptions = {
   $.fn.sliderApp = function (param: string | IOptions, arg?: string) {
     const element = this.first();
     if (param instanceof Object && !arg) {
-      const configPanelView = new ConfigPanelView(element, 'change');
+      const configPanelView = new ConfigPanelView(element);
       const sliderView = new SliderView(element);
       const model = new Model(
         param.orientation,
@@ -48,8 +48,9 @@ const defaults: IOptions = {
     }
   };
 }(jQuery));
+const element = $('.wrapper');
 
-$('.wrapper').sliderApp(defaults);
+element.sliderApp(defaults);
 
-$('.wrapper').sliderApp('changeOrientation');
-$('.wrapper').sliderApp('changeStep', '5');
+element.sliderApp('changeOrientation');
+element.sliderApp('changeStep', '5');

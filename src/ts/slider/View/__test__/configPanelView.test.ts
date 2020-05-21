@@ -1,27 +1,14 @@
 import ConfigPanelView from '../ConfigPanelView';
 
-interface IExtendedConfigPanelView extends IConfigPanelView {
-  getHTML(): JQuery;
-}
-
-const parentNode = $('<div></div>');
-
-class ExtendedConfigPanelView extends ConfigPanelView implements IExtendedConfigPanelView {
-  constructor() {
-    super(parentNode, 'change');
-  }
-
-  getHTML() {
-    return this._configPanel;
-  }
-}
-let configPanelView: ExtendedConfigPanelView;
-let configPanelHTML: JQuery;
+const parentNode = $('<div><div>');
+let configPanelView: IConfigPanelView;
+let $configPanel: JQuery;
 
 describe('ConfigPanelView', () => {
   beforeAll(() => {
-    configPanelView = new ExtendedConfigPanelView();
-    configPanelHTML = configPanelView.getHTML();
+    configPanelView = new ConfigPanelView(parentNode);
+    // @ts-ignore
+    $configPanel = configPanelView.$configPanel;
     configPanelView.addConfigPanelHandlers();
   });
 
@@ -34,26 +21,26 @@ describe('ConfigPanelView', () => {
   });
 
   test('orientation button click test', () => {
-    const orientationButton = configPanelHTML.find('.config-panel__button--orientation');
+    const orientationButton = $configPanel.find('.config-panel__button--orientation');
     orientationButton.trigger('click');
     expect(configPanelView.emit).toHaveBeenCalledWith('change-orientation', null);
   });
 
-  test('orientation button click test', () => {
-    const showValueButton = configPanelHTML.find('.config-panel__button--show-values');
+  test('show-values button click test', () => {
+    const showValueButton = $configPanel.find('.config-panel__button--show-values');
     showValueButton.trigger('click');
     expect(configPanelView.emit).toHaveBeenCalledWith('change-show-values', null);
   });
 
   test('range state button click test', () => {
-    const rangeStateButton = configPanelHTML.find('.config-panel__button--range-state');
+    const rangeStateButton = $configPanel.find('.config-panel__button--range-state');
     rangeStateButton.trigger('click');
     expect(configPanelView.emit).toHaveBeenCalledWith('change-range-state', null);
   });
 
   test('input values change test', () => {
     const valuesArr = ['1', '2', '3', '4'];
-    const inputValues = configPanelHTML.find('.config-panel__input--values');
+    const inputValues = $configPanel.find('.config-panel__input--values');
     inputValues.val(valuesArr.join(' '));
     inputValues.trigger('change');
     expect(configPanelView.emit).toHaveBeenCalledWith('change-values', valuesArr);
@@ -61,7 +48,7 @@ describe('ConfigPanelView', () => {
 
   test('input step change test', () => {
     let step = '5';
-    const inputStep = configPanelHTML.find('.config-panel__input--step');
+    const inputStep = $configPanel.find('.config-panel__input--step');
     inputStep.val(step);
     inputStep.trigger('change');
     expect(configPanelView.emit).toHaveBeenCalledWith('change-step', parseInt(step, 10));

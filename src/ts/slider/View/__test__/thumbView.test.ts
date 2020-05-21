@@ -3,29 +3,15 @@ import ThumbView from '../ThumbView';
 const parentNode = $('<div></div>');
 const modifier = 'from';
 
-interface IExtendedThumbView extends ThumbView {
-  getThumb(): JQuery;
-}
 
-class ExtendedThumbView extends ThumbView implements IExtendedThumbView {
-  constructor() {
-    super(modifier, parentNode);
-  }
-
-  getThumb() {
-    return this._thumb;
-  }
-}
-
-let thumbView: IExtendedThumbView;
-let thumb: JQuery;
-let thumbValue: JQuery;
+let thumbView: IThumbView;
+let $thumbValue: JQuery;
 
 describe('ThumbView', () => {
   beforeEach(() => {
-    thumbView = new ExtendedThumbView();
-    thumb = thumbView.getThumb();
-    thumbValue = thumb.find('.slider__value');
+    thumbView = new ThumbView(modifier, parentNode);
+    // @ts-ignore
+    $thumbValue = thumbView.$thumb.find('.slider__value');
   });
 
   test('removeFromDOM, isInDOM, appendToNode', () => {
@@ -41,9 +27,7 @@ describe('ThumbView', () => {
   test('setValue', () => {
     const value = '123';
     thumbView.setValue(value);
-    const thumbValueText = thumbValue.text();
-
-    expect(thumbValueText).toBe(value);
+    expect($thumbValue.text()).toBe(value);
   });
 
   test('getModifier', () => {
@@ -73,10 +57,10 @@ describe('ThumbView', () => {
 
   test('hideValue, showValue', () => {
     thumbView.hideValue();
-    expect(thumbValue[0].style.display).toBe('none');
+    expect($thumbValue[0].style.display).toBe('none');
 
     thumbView.showValue();
-    expect(thumbValue[0].style.display).toBe('');
+    expect($thumbValue[0].style.display).toBe('');
   });
 
   test('getWidth', () => {

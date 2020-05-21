@@ -1,27 +1,14 @@
 import ValueInputView from '../ValueInputView';
 
-interface IExtendedValueInputView extends IValueInputView {
-  getInput(): JQuery;
-}
 const parentElement = $('<div></div>');
 const modifier = 'from';
 
-class ExtendedValueInputView extends ValueInputView implements IExtendedValueInputView {
-  constructor() {
-    super(modifier, parentElement);
-  }
-
-  getInput() {
-    return this._valueInput;
-  }
-}
-
-let valueInputView: IExtendedValueInputView;
+let valueInputView: IValueInputView;
 let callbackFn: any;
 
 describe('ValueInputView', () => {
   beforeEach(() => {
-    valueInputView = new ExtendedValueInputView();
+    valueInputView = new ValueInputView(modifier, parentElement);
     callbackFn = jest.fn();
     valueInputView.addChangeHandler(callbackFn, 'type');
   });
@@ -45,9 +32,10 @@ describe('ValueInputView', () => {
     expect(valueInputView.getModifier()).toBe(modifier);
   });
 
-  test('handel', () => {
-    const input = valueInputView.getInput();
-    input.trigger('change');
+  test('input change event test', () => {
+    // @ts-ignore
+    const { $valueInput } = valueInputView;
+    $valueInput.trigger('change');
     expect(callbackFn).toBeCalledTimes(1);
     expect(callbackFn).toHaveBeenCalledWith('type', valueInputView);
   });

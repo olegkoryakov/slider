@@ -4,28 +4,9 @@ interface IState {
   isShowValue: boolean,
 }
 
-interface IEvents {
-  [eventName: string]: Function[],
-}
-
-interface IEventEmitter {
-  events: IEvents,
-  on(eventName: string, callback: Function): void,
-  emit(eventName: string, arg: any): void,
-}
-
-interface IModel{
-  _state: IState,
-  _step: number,
-  getRangeValues(): IRangeValues,
-  getValues(): TValues,
-  getState(): IState,
-  setValues(values: TValues): void,
-  setOrientationState(orientation: IState['orientation']): void,
-  setRangeState(rangeState: IState['isRange']): void,
-  setShowValueState(showValue: IState['isShowValue']): void,
-  setStep(step: number): void,
-  getStep(): number,
+interface IRangeInstances {
+  thumb: IThumbView,
+  input: IValueInputView,
 }
 
 interface INumberValues {
@@ -49,10 +30,28 @@ interface ISliderOptions {
 
 type TModifier = 'from' | 'to';
 
+interface IEvents {
+  [eventName: string]: Function[],
+}
+
+interface IEventEmitter {
+  on(eventName: string, callback: Function): void,
+  emit(eventName: string, arg: any): void,
+}
+
+interface IModel{
+  getRangeValues(): IRangeValues,
+  getValues(): TValues,
+  getState(): IState,
+  setValues(values: TValues): void,
+  setOrientationState(orientation: IState['orientation']): void,
+  setRangeState(rangeState: IState['isRange']): void,
+  setShowValueState(showValue: IState['isShowValue']): void,
+  setStep(step: number): void,
+  getStep(): number,
+}
+
 interface IThumbView {
-  _thumb: JQuery,
-  _modifier: TModifier,
-  _node: JQuery,
   getModifier(): TModifier,
   appendToNode(): void,
   removeFromDOM(): void,
@@ -73,8 +72,6 @@ interface IThumbView {
 }
 
 interface IRangeLineView {
-  _rangeLine: JQuery;
-  _node: JQuery;
   setRangeLineSizeFromCoords(
     coordFrom: number,
     coordTo: number,
@@ -91,15 +88,7 @@ interface IRangeLineView {
 }
 
 interface ISliderView extends IEventEmitter{
-  _inputValueFrom: IValueInputView,
-  _inputValueTo: IValueInputView,
-  _thumbFrom: IThumbView,
-  _thumbTo: IThumbView,
-  _rangeLine: IRangeLineView,
-  _slider: JQuery,
-  _node: JQuery,
   render(state: IState): void,
-  _onSliderLineClick(clickE: JQuery.ClickEvent): void,
   setOrientation(orientation: IState['orientation']): void,
   getThumbByModifier(modifier: TModifier): IThumbView;
   getInputByModifier(modifier: TModifier): IValueInputView;
@@ -128,9 +117,6 @@ interface IConverter {
 }
 
 interface IValueInputView {
-  _valueInput: JQuery,
-  _modifier: TModifier,
-  _node: JQuery;
   appendToNode(): void,
   removeFromDOM(): void,
   setValue(value: number | string): void,
@@ -142,29 +128,15 @@ interface IValueInputView {
   ): void,
 }
 
-interface IRangeInstances {
-  thumb: IThumbView,
-  input: IValueInputView,
-}
-
 interface IConfigPanelView extends IEventEmitter {
-  _configPanel: JQuery,
-  _callbackPrefix: string,
   addConfigPanelHandlers(): void,
 }
 
 interface IPresenter extends IEventEmitter {
-  _sliderView: ISliderView,
-  _configPanel: IConfigPanelView,
-  _model: IModel,
-  _converter: IConverter,
   renderApp(): void,
-  _renderRange(rangeInstances: IRangeInstances): void,
   changeOrientation(): void,
   changeShowValues(): void,
   changeRangeState(): void,
   changeValues(values: string[]): void,
   changeStep(inputValue: string): void,
-  _changeValue(thumbView: IThumbView): void,
-  _changeInputValue(valueInputView: IValueInputView): void,
-}
+  }

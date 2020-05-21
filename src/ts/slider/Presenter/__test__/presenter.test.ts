@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Presenter from '../Presenter';
 import SliderView from '../../View/SliderView';
 import Model from '../../Model/Model';
@@ -20,34 +19,42 @@ describe('Presenter', () => {
       { from: 1, to: 100 },
     );
     sliderView = new SliderView(parentNode);
-    configPanelView = new ConfigPanelView(parentNode, 'change');
+    configPanelView = new ConfigPanelView(parentNode);
     presenter = new Presenter(configPanelView, sliderView, model);
   });
 
   test('renderApp', () => {
-    presenter._sliderView.calcValues = jest.fn();
-    presenter._sliderView.render = jest.fn();
+    // @ts-ignore
+    presenter.sliderView.calcValues = jest.fn();
+    // @ts-ignore
+    presenter.sliderView.render = jest.fn();
     presenter.renderApp();
 
-    expect(presenter._sliderView.render).toHaveBeenCalledWith({
+    // @ts-ignore
+    expect(presenter.sliderView.render).toHaveBeenCalledWith({
       orientation: 'horizontal',
       isRange: false,
       isShowValue: false,
     });
-    expect(presenter._sliderView.calcValues).toBeCalled();
+
+    // @ts-ignore
+    expect(presenter.sliderView.calcValues).toBeCalled();
   });
 
   test('renderRange', () => {
     const rangeInstances = {
-      thumb: presenter._sliderView._thumbTo,
-      input: presenter._sliderView._inputValueTo,
+      // @ts-ignore
+      thumb: presenter.sliderView.thumbTo,
+      // @ts-ignore
+      input: presenter.sliderView.inputValueTo,
     };
 
     rangeInstances.input.setValue = jest.fn();
     rangeInstances.thumb.setValue = jest.fn();
     rangeInstances.thumb.setPosition = jest.fn();
 
-    presenter._renderRange(rangeInstances);
+    // @ts-ignore
+    presenter.renderRange(rangeInstances);
     expect(rangeInstances.thumb.setPosition).toHaveBeenCalledWith('top', 0);
     expect(rangeInstances.thumb.setValue).toHaveBeenCalledWith(100);
     expect(rangeInstances.input.setValue).toHaveBeenCalledWith(100);
@@ -60,54 +67,76 @@ describe('Presenter', () => {
 
     presenter.changeValues(['1', '2', '3']);
 
-    presenter._renderRange(rangeInstances);
+    // @ts-ignore
+    presenter.renderRange(rangeInstances);
     expect(rangeInstances.thumb.setPosition).toHaveBeenCalledWith('top', 0);
     expect(rangeInstances.thumb.setValue).toHaveBeenCalledWith('3');
     expect(rangeInstances.input.setValue).toHaveBeenCalledWith('3');
   });
 
   test('changeOrientation', () => {
-    presenter._model.setOrientationState = jest.fn();
-    presenter._sliderView.setOrientation = jest.fn();
+    // @ts-ignore
+    presenter.model.setOrientationState = jest.fn();
+    // @ts-ignore
+    presenter.sliderView.setOrientation = jest.fn();
 
     presenter.changeOrientation();
 
-    expect(presenter._model.setOrientationState).toHaveBeenCalledWith('vertical');
-    expect(presenter._sliderView.setOrientation).toHaveBeenCalledWith('vertical');
+    // @ts-ignore
+    expect(presenter.model.setOrientationState).toHaveBeenCalledWith('vertical');
+
+    // @ts-ignore
+    expect(presenter.sliderView.setOrientation).toHaveBeenCalledWith('vertical');
   });
 
   test('changeShowValues', () => {
-    presenter._sliderView.setShowValue = jest.fn();
-    presenter._model.setShowValueState = jest.fn();
+    // @ts-ignore
+    presenter.sliderView.setShowValue = jest.fn();
+
+    // @ts-ignore
+    presenter.model.setShowValueState = jest.fn();
     presenter.changeShowValues();
 
-    expect(presenter._sliderView.setShowValue).toHaveBeenCalledWith(true);
-    expect(presenter._model.setShowValueState).toHaveBeenCalledWith(true);
+
+    // @ts-ignore
+    expect(presenter.sliderView.setShowValue).toHaveBeenCalledWith(true);
+
+    // @ts-ignore
+    expect(presenter.model.setShowValueState).toHaveBeenCalledWith(true);
   });
 
   test('changeRangeState', () => {
-    presenter._sliderView.setRange = jest.fn();
-    presenter._model.setRangeState = jest.fn();
+    // @ts-ignore
+    presenter.sliderView.setRange = jest.fn();
+
+    // @ts-ignore
+    presenter.model.setRangeState = jest.fn();
 
     presenter.changeRangeState();
-    expect(presenter._sliderView.setRange).toHaveBeenCalledWith(true);
-    expect(presenter._model.setRangeState).toHaveBeenCalledWith(true);
+    // @ts-ignore
+    expect(presenter.sliderView.setRange).toHaveBeenCalledWith(true);
+    // @ts-ignore
+    expect(presenter.model.setRangeState).toHaveBeenCalledWith(true);
   });
 
   test('changeStep', () => {
     let step: string;
 
     step = 'asd';
-    presenter._model.setStep = jest.fn();
+    // @ts-ignore
+    presenter.model.setStep = jest.fn();
     presenter.changeStep(step);
 
-    expect(presenter._model.setStep).toHaveBeenCalledWith(1);
+    // @ts-ignore
+    expect(presenter.model.setStep).toHaveBeenCalledWith(1);
 
     step = '123';
-    presenter._model.setStep = jest.fn();
+    // @ts-ignore
+    presenter.model.setStep = jest.fn();
     presenter.changeStep(step);
 
-    expect(presenter._model.setStep).toHaveBeenCalledWith(123);
+    // @ts-ignore
+    expect(presenter.model.setStep).toHaveBeenCalledWith(123);
   });
 
   test('changeValues', () => {
@@ -124,16 +153,20 @@ describe('Presenter', () => {
   });
 
   test('changeValue', () => {
-    const thumb = presenter._sliderView._thumbTo;
-    const input = presenter._sliderView._inputValueTo;
+    // @ts-ignore
+    const thumb = presenter.sliderView.thumbTo;
+    // @ts-ignore
+    const input = presenter.sliderView.inputValueTo;
 
-    presenter._sliderView.getWidth = () => 123;
+    // @ts-ignore
+    presenter.sliderView.getWidth = () => 123;
 
     input.setValue = jest.fn();
     thumb.setValue = jest.fn();
 
 
-    presenter._changeValue(thumb);
+    // @ts-ignore
+    presenter.changeValue(thumb);
     expect(input.setValue).toHaveBeenCalledWith(1);
     expect(thumb.setValue).toHaveBeenCalledWith(1);
 
@@ -144,35 +177,42 @@ describe('Presenter', () => {
   });
 
   test('changeInputValue', () => {
-    presenter._sliderView.getWidth = () => 123;
-    const input = presenter._sliderView._inputValueTo;
-    const thumb = presenter._sliderView._thumbTo;
+    // @ts-ignore
+    presenter.sliderView.getWidth = () => 123;
+    // @ts-ignore
+    const input = presenter.sliderView.inputValueTo;
+    // @ts-ignore
+    const thumb = presenter.sliderView.thumbTo;
 
     thumb.setValue = jest.fn();
     input.getValue = () => '50';
 
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
 
     expect(thumb.setValue).toHaveBeenCalledWith(50);
 
     thumb.setValue = jest.fn();
     input.getValue = () => '101';
 
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
 
     expect(thumb.setValue).toHaveBeenCalledWith(100);
 
     thumb.setValue = jest.fn();
     input.getValue = () => '-50';
 
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
 
     expect(thumb.setValue).toHaveBeenCalledWith(1);
 
     thumb.setValue = jest.fn();
     input.getValue = () => 'wrong value';
 
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
 
     expect(thumb.setValue).toHaveBeenCalledWith(1);
 
@@ -180,13 +220,15 @@ describe('Presenter', () => {
     model.setValues(valuesArray);
     input.getValue = () => valuesArray[1];
     thumb.setValue = jest.fn();
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
     expect(thumb.setValue).toHaveBeenCalledWith(valuesArray[1]);
 
 
     input.getValue = () => 'wrong value';
     thumb.setValue = jest.fn();
-    presenter._changeInputValue(input);
+    // @ts-ignore
+    presenter.changeInputValue(input);
     expect(thumb.setValue).toHaveBeenCalledWith(valuesArray[0]);
   });
 });

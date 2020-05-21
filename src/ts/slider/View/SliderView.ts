@@ -6,42 +6,68 @@ import ValueInputView from './ValueInputView';
 export default class SliderView extends EventEmitter implements ISliderView {
   constructor(node: JQuery) {
     super();
-    this._node = node;
-    this._slider = $('<div class="slider"><div class="slider__values"></div><div class="slider__line"></div></div>');
-    this._sliderLine = this._slider.find('.slider__line');
-    this._rangeLine = new RangeLineView(this._sliderLine);
-    this._thumbFrom = new ThumbView('from', this._sliderLine);
-    this._thumbTo = new ThumbView('to', this._sliderLine);
-    this._inputValueFrom = new ValueInputView('from', this._slider.find('.slider__values'));
-    this._inputValueTo = new ValueInputView('to', this._slider.find('.slider__values'));
+    this.$node = node;
+    this.$slider = $('<div class="slider"><div class="slider__values"></div><div class="slider__line"></div></div>');
+    this.$sliderLine = this.$slider.find('.slider__line');
+    this.rangeLine = new RangeLineView(this.$sliderLine);
+    this.thumbFrom = new ThumbView('from', this.$sliderLine);
+    this.thumbTo = new ThumbView('to', this.$sliderLine);
+    this.inputValueFrom = new ValueInputView('from', this.$slider.find('.slider__values'));
+    this.inputValueTo = new ValueInputView('to', this.$slider.find('.slider__values'));
   }
 
-  _node: JQuery;
+  private $node: JQuery;
 
-  _inputValueFrom: IValueInputView;
+  private $slider: JQuery;
 
-  _inputValueTo: IValueInputView;
+  private $sliderLine: JQuery;
 
-  _rangeLine: IRangeLineView;
+  private inputValueFrom: IValueInputView;
 
-  _thumbFrom: IThumbView;
+  private inputValueTo: IValueInputView;
 
-  _thumbTo: IThumbView;
+  private rangeLine: IRangeLineView;
 
-  _slider: JQuery;
+  private thumbFrom: IThumbView;
 
-  _sliderLine: JQuery;
+  private thumbTo: IThumbView;
+
+  private onSliderLineClick(clickE: JQuery.ClickEvent) {
+    if (clickE.target !== this.$sliderLine[0]) return;
+    const width = this.getWidth();
+    const { position } = this.getOptions();
+    const offsetName = position === 'left' ? 'offsetX' : 'offsetY';
+    let offset = clickE[offsetName];
+
+    if (offset > width) offset = width;
+    else if (offset < 0) offset = 0;
+
+    let closestThumb = this.thumbFrom;
+    if (this.isRange()) {
+      const thumbsArray = [this.thumbTo, this.thumbFrom];
+      const thumbsCoords = thumbsArray
+        .map((thumb) => thumb.getCoord(position));
+      const distances = thumbsCoords.map((coord) => Math.abs(offset - coord));
+      closestThumb = thumbsArray[
+        distances.findIndex((distance) => distance === Math.min(...distances))
+      ];
+    }
+
+    closestThumb.setPosition(position, offset);
+
+    this.emit('change-value', closestThumb);
+  }
 
   render(state: IState) {
-    this._slider.appendTo(this._node);
-    this._sliderLine.click(this._onSliderLineClick.bind(this));
+    this.$slider.appendTo(this.$node);
+    this.$sliderLine.click(this.onSliderLineClick.bind(this));
     this.setOrientation(state.orientation);
     this.setRange(state.isRange);
     this.setShowValue(state.isShowValue);
     this.addWindowHandler();
 
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
-    const inputsArray = [this._inputValueFrom, this._inputValueTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
+    const inputsArray = [this.inputValueFrom, this.inputValueTo];
 
     thumbsArray.forEach((thumb) => {
       thumb.addDragNDropHandler(
@@ -61,16 +87,17 @@ export default class SliderView extends EventEmitter implements ISliderView {
   }
 
   calcValues() {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     thumbsArray.forEach((thumb) => {
       this.emit('change-value', thumb);
     });
   }
 
   addWindowHandler() {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     const that = this;
-    function onWindowResize() {
+
+    const onWindowResize = function onWindowResizeHandler() {
       const { position } = that.getOptions();
       const width = that.getWidth();
       const thumbsPositions = thumbsArray.map((thumb) => thumb.getCoord(position));
@@ -80,56 +107,30 @@ export default class SliderView extends EventEmitter implements ISliderView {
         }
       });
       that.calcValues();
-    }
+    };
 
     $(window).resize(onWindowResize.bind(this));
   }
 
-  _onSliderLineClick(clickE: JQuery.ClickEvent) {
-    if (clickE.target !== this._sliderLine[0]) return;
-    const width = this.getWidth();
-    const { position } = this.getOptions();
-    const offsetName = position === 'left' ? 'offsetX' : 'offsetY';
-    let offset = clickE[offsetName];
-
-    if (offset > width) offset = width;
-    else if (offset < 0) offset = 0;
-
-    let closestThumb = this._thumbFrom;
-    if (this.isRange()) {
-      const thumbsArray = [this._thumbTo, this._thumbFrom];
-      const thumbsCoords = thumbsArray
-        .map((thumb) => thumb.getCoord(position));
-      const distances = thumbsCoords.map((coord) => Math.abs(offset - coord));
-      closestThumb = thumbsArray[
-        distances.findIndex((distance) => distance === Math.min(...distances))
-      ];
-    }
-
-    closestThumb.setPosition(position, offset);
-
-    this.emit('change-value', closestThumb);
-  }
-
   getThumbByModifier(modifier: TModifier) {
-    const thumbsArray = [this._thumbTo, this._thumbFrom];
+    const thumbsArray = [this.thumbTo, this.thumbFrom];
     const thumbView = thumbsArray.filter((thumb) => thumb.getModifier() === modifier)[0];
     return thumbView;
   }
 
   getInputByModifier(modifier: TModifier) {
-    const inputsArray = [this._inputValueFrom, this._inputValueTo];
+    const inputsArray = [this.inputValueFrom, this.inputValueTo];
     const inputView = inputsArray.filter((input) => input.getModifier() === modifier)[0];
     return inputView;
   }
 
   setOrientation(orientationState: IState['orientation']) {
-    const thumbsArray = [this._thumbFrom, this._thumbTo];
+    const thumbsArray = [this.thumbFrom, this.thumbTo];
     const oldPos = this.getOptions().position;
     const thumbsCoord = thumbsArray.map((thumb) => thumb.getCoord(oldPos));
 
     const orientationClass = `slider--${orientationState}`;
-    this._slider.attr('class', `slider ${orientationClass}`);
+    this.$slider.attr('class', `slider ${orientationClass}`);
 
     const newPos = this.getOptions().position;
     const width = this.getWidth();
@@ -145,7 +146,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
       thumb.setPosition(newPos, thumbsCoord[index]);
     });
 
-    this._rangeLine.setOrientation(oldPos, newPos);
+    this.rangeLine.setOrientation(oldPos, newPos);
     if (this.isRange()) this.resizeRangeLine();
 
     this.calcValues();
@@ -155,34 +156,34 @@ export default class SliderView extends EventEmitter implements ISliderView {
     const currentRangeState = this.isRange();
     if (currentRangeState !== rangeState) {
       if (rangeState) {
-        this._thumbTo.appendToNode();
-        this._rangeLine.appendToNode();
-        this._inputValueTo.appendToNode();
-        this.emit('render-range', { thumb: this._thumbTo, input: this._inputValueTo });
+        this.thumbTo.appendToNode();
+        this.rangeLine.appendToNode();
+        this.inputValueTo.appendToNode();
+        this.emit('render-range', { thumb: this.thumbTo, input: this.inputValueTo });
         this.resizeRangeLine();
       } else {
-        this._thumbTo.removeFromDOM();
-        this._inputValueTo.removeFromDOM();
-        this._rangeLine.removeFromDOM();
+        this.thumbTo.removeFromDOM();
+        this.inputValueTo.removeFromDOM();
+        this.rangeLine.removeFromDOM();
       }
     }
   }
 
   isRange() {
-    return this._thumbTo.isInDOM() && this._rangeLine.isInDOM();
+    return this.thumbTo.isInDOM() && this.rangeLine.isInDOM();
   }
 
   setShowValue(showValueState: IState['isShowValue']) {
-    const currentShowValueState = this._thumbTo.isValueShowing()
-    && this._thumbFrom.isValueShowing();
+    const currentShowValueState = this.thumbTo.isValueShowing()
+    && this.thumbFrom.isValueShowing();
 
     if (currentShowValueState !== showValueState) {
       if (showValueState) {
-        this._thumbFrom.showValue();
-        this._thumbTo.showValue();
+        this.thumbFrom.showValue();
+        this.thumbTo.showValue();
       } else {
-        this._thumbFrom.hideValue();
-        this._thumbTo.hideValue();
+        this.thumbFrom.hideValue();
+        this.thumbTo.hideValue();
       }
     }
   }
@@ -190,9 +191,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
   resizeRangeLine() {
     if (!this.isRange) return;
     const { position } = this.getOptions();
-    const gap = this._thumbFrom.getWidth() / 2;
-    let coordFrom = this._thumbFrom.getCoord(position);
-    let coordTo = this._thumbTo.getCoord(position);
+    const gap = this.thumbFrom.getWidth() / 2;
+    let coordFrom = this.thumbFrom.getCoord(position);
+    let coordTo = this.thumbTo.getCoord(position);
 
     if (coordFrom > coordTo) {
       const temp = coordFrom;
@@ -200,7 +201,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
       coordTo = temp;
     }
 
-    this._rangeLine.setRangeLineSizeFromCoords(
+    this.rangeLine.setRangeLineSizeFromCoords(
       coordFrom,
       coordTo,
       gap,
@@ -211,7 +212,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
   getOptions() {
     let clientAxis: ISliderOptions['clientAxis'];
     let position: ISliderOptions['position'];
-    if (this._slider.hasClass('slider--horizontal')) {
+    if (this.$slider.hasClass('slider--horizontal')) {
       clientAxis = 'clientX';
       position = 'left';
     } else {
@@ -230,10 +231,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
   getWidth() {
     const { position } = this.getOptions();
     const prop = position === 'left' ? 'innerWidth' : 'innerHeight';
-    const sliderLineWidth = this._slider[prop]() || 0;
-    const sliderLineGap = (this._sliderLine.outerWidth() || 0)
-                          - (this._sliderLine.innerWidth() || 0);
-    const innerWidth = Math.floor(sliderLineWidth - this._thumbFrom.getWidth() - sliderLineGap);
+    const sliderLineWidth = this.$slider[prop]() || 0;
+    const sliderLineGap = (this.$sliderLine.outerWidth() || 0)
+                          - (this.$sliderLine.innerWidth() || 0);
+    const innerWidth = Math.floor(sliderLineWidth - this.thumbFrom.getWidth() - sliderLineGap);
 
     return innerWidth;
   }

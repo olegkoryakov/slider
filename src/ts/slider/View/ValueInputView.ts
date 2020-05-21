@@ -1,31 +1,31 @@
 export default class ValueInputView implements IValueInputView {
   constructor(modifier: TModifier, parentNode: JQuery) {
-    this._valueInput = $(`<input type="text" class="slider__input-value slider__input-value--${modifier}">`);
-    this._modifier = modifier;
-    this._node = parentNode;
+    this.$valueInput = $(`<input type="text" class="slider__input-value slider__input-value--${modifier}">`);
+    this.modifier = modifier;
+    this.$node = parentNode;
     this.appendToNode();
   }
 
-  _node: JQuery;
+  private $node: JQuery;
 
-  _valueInput: JQuery;
+  private $valueInput: JQuery;
 
-  _modifier: TModifier;
+  private modifier: TModifier;
 
   appendToNode() {
-    this._valueInput.appendTo(this._node);
+    this.$valueInput.appendTo(this.$node);
   }
 
   removeFromDOM() {
-    this._valueInput.detach();
+    this.$valueInput.detach();
   }
 
   setValue(value: number | string) {
-    this._valueInput.val(value);
+    this.$valueInput.val(value);
   }
 
   getValue(): string {
-    const input = this._valueInput[0];
+    const input = this.$valueInput[0];
     let value = '';
     if (input instanceof HTMLInputElement) {
       value = input.value;
@@ -34,19 +34,19 @@ export default class ValueInputView implements IValueInputView {
   }
 
   getModifier() {
-    return this._modifier;
+    return this.modifier;
   }
 
   addChangeHandler(
     emitCallback: Function,
     emitCallbackType: string,
   ) {
-    const input = this._valueInput;
+    const input = this.$valueInput;
     const that = this;
 
-    function onValueInputChange() {
+    const onValueInputChange = function onValueInputChangeHandler() {
       emitCallback(emitCallbackType, that);
-    }
+    };
 
     input.change(onValueInputChange.bind(that));
   }

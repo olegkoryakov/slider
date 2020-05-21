@@ -6,18 +6,18 @@ export default class Model implements IModel {
     step: number,
     values: TValues,
   ) {
-    this._state = {
+    this.state = {
       orientation,
       isRange,
       isShowValue,
     };
-    this._step = step;
+    this.step = step;
     this.setValues(values);
   }
 
-  _state: IState;
+  private state: IState;
 
-  _step: number;
+  private step: number;
 
   values!: TValues;
 
@@ -61,26 +61,26 @@ export default class Model implements IModel {
   }
 
   getState(): IState {
-    return this._state;
+    return this.state;
   }
 
   setStep(step: number): void {
-    this._step = step;
+    this.step = step;
   }
 
   getStep(): number {
-    return this._step;
+    return this.step;
   }
 
   setOrientationState(orientation: IState['orientation']) {
-    this._state.orientation = orientation;
+    this.state.orientation = orientation;
   }
 
   setRangeState(rangeState: IState['isRange']) {
-    this._state.isRange = rangeState;
+    this.state.isRange = rangeState;
   }
 
   setShowValueState(showValue: IState['isShowValue']) {
-    this._state.isShowValue = showValue;
+    this.state.isShowValue = showValue;
   }
 }
