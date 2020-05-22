@@ -11,5 +11,5 @@ interface IMethods {
 }
 
 interface JQuery {
-  sliderApp(param: string | IOptions, arg?: string): void,
+  sliderApp(param: string | IOptions, arg?: string | string[]): void,
 }
