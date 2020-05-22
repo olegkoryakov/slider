@@ -19,9 +19,9 @@ export default class Model implements IModel {
 
   private step: number;
 
-  values!: TValues;
+  private values!: TValues;
 
-  rangeValues!: IRangeValues;
+  private rangeValues!: IRangeValues;
 
   setValues(values: TValues) {
     if (values instanceof Array) {
