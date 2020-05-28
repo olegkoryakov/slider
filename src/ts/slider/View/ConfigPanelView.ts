@@ -1,6 +1,14 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
-
+/**
+ * Представление конфигурационной панели слайдера
+ */
 export default class ConfigPanelView extends EventEmitter implements IConfigPanelView {
+  /**
+   * Записывает разметку в $configPanel
+   * Добавляет обработчики событий к кнопкам и инпутам
+   * Отрисовывает в родительском элементе
+   * @param node Родительский элемент
+   */
   constructor(node: JQuery) {
     super();
     this.$configPanel = $(`<div class="config-panel"><input type="text" placeholder="Enter values range/values array" class="config-panel__input config-panel__input--values">
@@ -13,8 +21,14 @@ export default class ConfigPanelView extends EventEmitter implements IConfigPane
     node.append(this.$configPanel);
   }
 
-  $configPanel: JQuery;
+  /**
+   * Свойство, хранящее разметку панели
+   */
+  private $configPanel: JQuery;
 
+  /**
+   * Добавляет обработчики событий на кнопки и инпуты
+   */
   addConfigPanelHandlers() {
     const that = this;
     const buttons = this.$configPanel.find('.config-panel__button');

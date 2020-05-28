@@ -1,7 +1,16 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Converter from './Converter';
 
+/**
+ * Настраивает общение между View и Model
+ */
 export default class Presenter extends EventEmitter implements IPresenter {
+  /**
+   * Записывает свойства класса и подписывает представления на события
+   * @param configPanel Представление конфигурационной панели слайдера
+   * @param sliderView Представление слайдера
+   * @param model Модель слайдера
+   */
   constructor(configPanel: IConfigPanelView, sliderView: ISliderView, model: IModel) {
     super();
     this.sliderView = sliderView;
@@ -20,14 +29,31 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.configPanel.on('change-range-state', this.changeRangeState.bind(this));
   }
 
+  /**
+   * Представление конфигурационной панели
+   */
   private configPanel: IConfigPanelView;
 
+  /**
+   * Конвертер значений и координат
+   */
   private converter: IConverter;
 
+  /**
+   * Представление слайдера
+   */
   private sliderView: ISliderView;
 
+  /**
+   * Модель данных слайдера
+   */
   private model: IModel;
 
+  /**
+   * Отрисовывает элементы для промежуточного значения
+   * @param rangeInstances Объект, содержащий представления поля ввода и ползунка,
+   * которые используются для отображения слайдера с промежуточным значением
+   */
   private renderRange(rangeInstances: IRangeInstances) {
     const values = this.model.getValues();
     const width = this.sliderView.getWidth();
@@ -43,6 +69,10 @@ export default class Presenter extends EventEmitter implements IPresenter {
     rangeInstances.input.setValue(value);
   }
 
+  /**
+   * Изменяет значение ползунка и соответствующего инпута
+   * @param thumbView Инстанс представления ползунка
+   * */
   private changeValue(thumbView: IThumbView) {
     const sliderOptions = this.sliderView.getOptions();
     const width = this.sliderView.getWidth();
@@ -67,6 +97,10 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.sliderView.resizeRangeLine();
   }
 
+  /**
+   * Изменяет значение инпута и соответствующего бегунка
+   * @param valueInputView Инстанс представления инпута значений
+   */
   private changeInputValue(valueInputView: IValueInputView) {
     const { position } = this.sliderView.getOptions();
     const step = this.model.getStep();
@@ -102,12 +136,18 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.sliderView.resizeRangeLine();
   }
 
+  /**
+   * Отрисовывает слайдер на основе данных из модели
+   */
   renderApp() {
     const state = this.model.getState();
     this.sliderView.render(state);
     this.sliderView.calcValues();
   }
 
+  /**
+   * Изменяет ориентацию в представления слайдера и в данных модели
+   */
   changeOrientation() {
     const { orientation } = this.model.getState();
     const toggledOrientation = orientation === 'horizontal' ? 'vertical' : 'horizontal';
@@ -116,6 +156,9 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.sliderView.setOrientation(toggledOrientation);
   }
 
+  /**
+   * Изменяет отображение текущего значения над бегунками
+   */
   changeShowValues() {
     const { isShowValue } = this.model.getState();
     const toggledShowValue = !isShowValue;
@@ -124,6 +167,9 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.model.setShowValueState(toggledShowValue);
   }
 
+  /**
+   * Изменяет состояние слайдера (промежуточное или одиночное)
+   */
   changeRangeState() {
     const { isRange } = this.model.getState();
     const toggledRange = !isRange;
@@ -132,6 +178,9 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.sliderView.setRange(toggledRange);
   }
 
+  /**
+   * Изменяет текущие значения сдайдера
+   */
   changeValues(values: string[]) {
     if (values.length > 2) this.model.setValues(values);
     if (values.length <= 2) {
@@ -153,6 +202,9 @@ export default class Presenter extends EventEmitter implements IPresenter {
     this.sliderView.calcValues();
   }
 
+  /**
+   * Изменяет размер шага
+   */
   changeStep(inputValue: string) {
     let step = parseInt(inputValue, 10);
     if (Number.isNaN(step)) step = 1;

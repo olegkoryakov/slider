@@ -3,7 +3,15 @@ import ThumbView from './ThumbView';
 import EventEmitter from '../EventEmitter/EventEmitter';
 import ValueInputView from './ValueInputView';
 
+/**
+ * Представление слайдера
+ */
 export default class SliderView extends EventEmitter implements ISliderView {
+  /**
+   * Записывает свойства
+   * Создает инстансы компонентов представления слайдера
+   * @param node Родительский элемент
+   */
   constructor(node: JQuery) {
     super();
     this.$node = node;
@@ -16,22 +24,50 @@ export default class SliderView extends EventEmitter implements ISliderView {
     this.inputValueTo = new ValueInputView('to', this.$slider.find('.slider__values'));
   }
 
+  /**
+  * Родительский элемент
+  */
   private $node: JQuery;
 
+  /**
+   * Разметка слайдера
+   */
   private $slider: JQuery;
 
+  /**
+   * Линия слайдера, в которой содержаться бегунки
+   */
   private $sliderLine: JQuery;
 
+  /**
+   * Инстанс инпута с модификатором "from"
+   */
   private inputValueFrom: IValueInputView;
 
+  /**
+   * Инстанс инпута с модификатором "to"
+   */
   private inputValueTo: IValueInputView;
 
+  /**
+   * Инстанс промежуточной линии
+   */
   private rangeLine: IRangeLineView;
 
+  /**
+   * Инстанс бегунка с модификатором "from"
+   */
   private thumbFrom: IThumbView;
 
+  /**
+   * Инстанс бегунка с модификатором "to"
+   */
   private thumbTo: IThumbView;
 
+  /**
+   * Функция обработчика клика на линию слайдера
+   * @param clickE click event
+   */
   private onSliderLineClick(clickE: JQuery.ClickEvent) {
     if (clickE.target !== this.$sliderLine[0]) return;
     const width = this.getWidth();
@@ -58,6 +94,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
     this.emit('change-value', closestThumb);
   }
 
+  /**
+   * Отрисовка слайдера
+   * @param state текущее состояние модели
+   */
   render(state: IState) {
     this.$slider.appendTo(this.$node);
     this.$sliderLine.click(this.onSliderLineClick.bind(this));
@@ -86,6 +126,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     });
   }
 
+  /**
+   * Расчет текущих значений бегунков слайдера
+   */
   calcValues() {
     const thumbsArray = [this.thumbFrom, this.thumbTo];
     thumbsArray.forEach((thumb) => {
@@ -93,6 +136,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     });
   }
 
+  /**
+   * Функция вешает обработчик события resize на window
+   */
   addWindowHandler() {
     const thumbsArray = [this.thumbFrom, this.thumbTo];
     const that = this;
@@ -112,18 +158,30 @@ export default class SliderView extends EventEmitter implements ISliderView {
     $(window).resize(onWindowResize.bind(this));
   }
 
+  /**
+   * Возвращает инстанс бегунка по модификатору
+   * @param modifier модификатор
+   */
   getThumbByModifier(modifier: TModifier) {
     const thumbsArray = [this.thumbTo, this.thumbFrom];
     const thumbView = thumbsArray.filter((thumb) => thumb.getModifier() === modifier)[0];
     return thumbView;
   }
 
+  /**
+   * Возвращает инстанс инпута по модификатору
+   * @param modifier модификатор
+   */
   getInputByModifier(modifier: TModifier) {
     const inputsArray = [this.inputValueFrom, this.inputValueTo];
     const inputView = inputsArray.filter((input) => input.getModifier() === modifier)[0];
     return inputView;
   }
 
+  /**
+   * Устанавливает ориентацию слайдера
+   * @param orientationState ориентация
+   */
   setOrientation(orientationState: IState['orientation']) {
     const thumbsArray = [this.thumbFrom, this.thumbTo];
     const oldPos = this.getOptions().position;
@@ -152,6 +210,10 @@ export default class SliderView extends EventEmitter implements ISliderView {
     this.calcValues();
   }
 
+  /**
+   * Устанавливет промежуточное/одиночное значение слайдера
+   * @param rangeState промежуточное, если true, одиночное, если false
+   */
   setRange(rangeState: IState['isRange']) {
     const currentRangeState = this.isRange();
     if (currentRangeState !== rangeState) {
@@ -169,10 +231,17 @@ export default class SliderView extends EventEmitter implements ISliderView {
     }
   }
 
+  /**
+   * Возвращает true, если состояние слайдера промежуточное, false, если одиночное
+   */
   isRange() {
     return this.thumbTo.isInDOM() && this.rangeLine.isInDOM();
   }
 
+  /**
+   * Устанавливает показ/скрытие значений бегунков
+   * @param showValueState true, если показать, false, если скрыть
+   */
   setShowValue(showValueState: IState['isShowValue']) {
     const currentShowValueState = this.thumbTo.isValueShowing()
     && this.thumbFrom.isValueShowing();
@@ -188,6 +257,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     }
   }
 
+  /**
+   * Изменяет размер промежуточной линии слайдера, если this.isRange() === true
+   */
   resizeRangeLine() {
     if (!this.isRange) return;
     const { position } = this.getOptions();
@@ -209,6 +281,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     );
   }
 
+  /**
+   * Возвращает объект, с текущими опциями: имя позиции и ось
+   */
   getOptions() {
     let clientAxis: ISliderOptions['clientAxis'];
     let position: ISliderOptions['position'];
@@ -228,6 +303,9 @@ export default class SliderView extends EventEmitter implements ISliderView {
     return options;
   }
 
+  /**
+   * Возвращает текущую длину слайдера с учетом ориентации
+   */
   getWidth() {
     const { position } = this.getOptions();
     const prop = position === 'left' ? 'innerWidth' : 'innerHeight';
