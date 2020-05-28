@@ -1,7 +1,7 @@
 {
   "name": "slider",
   "version": "1.0.0",
-  "description": "tdd, mvp, ts",
+  "description": "simple and functional slider",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack/webpack.dev.js",
