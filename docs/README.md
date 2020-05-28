@@ -1,4 +1,0 @@
-[slider](globals.md)
-
-# slider
-
