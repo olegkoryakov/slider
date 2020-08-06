@@ -132,7 +132,7 @@ interface IConfigPanelView extends IEventEmitter {
   addConfigPanelHandlers(): void,
 }
 
-interface IPresenter extends IEventEmitter {
+interface IPresenter {
   renderApp(): void,
   changeOrientation(): void,
   changeShowValues(): void,

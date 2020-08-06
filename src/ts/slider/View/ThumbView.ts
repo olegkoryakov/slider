@@ -9,7 +9,7 @@ export default class ThumbView implements IThumbView {
    */
   constructor(modifier: TModifier, parentNode: JQuery) {
     this.modifier = modifier;
-    this.$thumb = $(`<div class="slider__thumb slider__thumb--${this.modifier}"><div class="slider__value"></div></div>`);
+    this.$thumb = $(`<div class="slider__thumb slider__thumb_${this.modifier}"><div class="slider__value"></div></div>`);
     this.$node = parentNode;
     this.appendToNode();
   }

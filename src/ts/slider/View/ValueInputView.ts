@@ -8,7 +8,7 @@ export default class ValueInputView implements IValueInputView {
    * @param parentNode Родительский элемент
    */
   constructor(modifier: TModifier, parentNode: JQuery) {
-    this.$valueInput = $(`<input type="text" class="slider__input-value slider__input-value--${modifier}">`);
+    this.$valueInput = $(`<input type="text" class="slider__input-value slider__input-value_${modifier}">`);
     this.modifier = modifier;
     this.$node = parentNode;
     this.appendToNode();

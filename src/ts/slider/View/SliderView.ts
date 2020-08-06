@@ -187,7 +187,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
     const oldPos = this.getOptions().position;
     const thumbsCoord = thumbsArray.map((thumb) => thumb.getCoord(oldPos));
 
-    const orientationClass = `slider--${orientationState}`;
+    const orientationClass = `slider_${orientationState}`;
     this.$slider.attr('class', `slider ${orientationClass}`);
 
     const newPos = this.getOptions().position;
@@ -287,7 +287,7 @@ export default class SliderView extends EventEmitter implements ISliderView {
   getOptions() {
     let clientAxis: ISliderOptions['clientAxis'];
     let position: ISliderOptions['position'];
-    if (this.$slider.hasClass('slider--horizontal')) {
+    if (this.$slider.hasClass('slider_horizontal')) {
       clientAxis = 'clientX';
       position = 'left';
     } else {

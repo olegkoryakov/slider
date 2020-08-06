@@ -1,10 +1,9 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
 import Converter from './Converter';
 
 /**
  * Настраивает общение между View и Model
  */
-export default class Presenter extends EventEmitter implements IPresenter {
+export default class Presenter implements IPresenter {
   /**
    * Записывает свойства класса и подписывает представления на события
    * @param configPanel Представление конфигурационной панели слайдера
@@ -12,7 +11,6 @@ export default class Presenter extends EventEmitter implements IPresenter {
    * @param model Модель слайдера
    */
   constructor(configPanel: IConfigPanelView, sliderView: ISliderView, model: IModel) {
-    super();
     this.sliderView = sliderView;
     this.model = model;
     this.configPanel = configPanel;

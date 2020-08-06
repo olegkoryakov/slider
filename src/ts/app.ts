@@ -47,9 +47,9 @@ $.fn.slider = function (param: string | IOptions, arg?: string | string[]) {
     methods[param](arg);
   }
 };
-const element = $('.wrapper--1st');
-const element2 = $('.wrapper--2nd');
-const element3 = $('.wrapper--3rd');
+const element = $('.wrapper_1st');
+const element2 = $('.wrapper_2nd');
+const element3 = $('.wrapper_3rd');
 
 element.slider(defaults);
 
